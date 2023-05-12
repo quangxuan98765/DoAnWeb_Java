@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.Part;
 
@@ -136,6 +138,27 @@ public class Product_DAO {
 		hinhSP = filePath;
 
 		return true;
+	}
+	
+	public List<Product_model> getAllProduct() {
+		try {
+			List<Product_model> plist = new ArrayList<>();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = ConnectionClass.getConnection();
+			String sql = "SELECT * FROM sanpham";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				plist.add(new Product_model(rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getInt("GiaSP"), rs.getInt("category_id"), rs.getInt("brand_id")));
+			}
+			stmt.close();
+			conn.close();
+			return plist;
+		} catch (Exception ex) {
+			// TODO: handle exception
+			System.out.println("ERROR: " + ex.getMessage());
+		}
+		return null;
 	}
 
 }

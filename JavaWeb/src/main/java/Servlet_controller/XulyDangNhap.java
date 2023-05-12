@@ -40,7 +40,7 @@ public class XulyDangNhap extends HttpServlet {
             //out.println("true");
             response.sendRedirect("index.jsp");
         } else {
-            String erorr = "Sai ten6 dang98 nhap hoac mat khau";
+            String erorr = "Sai tên đăng nhập hoặc mật khẩu";
             request.setAttribute("error", erorr);
             request.getRequestDispatcher("login.jsp").include(request, response);
         }

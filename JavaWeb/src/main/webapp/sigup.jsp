@@ -18,7 +18,6 @@
         <img src="img/error.png" class="alert-img" alt="">
         <p class="alert-msg">Error message</p>
     </div>
-	<c:if test="${1 == 1}">
 	<form method="post" action="XulyDangKy">
     <div class="container">
         <img src="img/dark-logo.png" class="logo "alt="">
@@ -38,7 +37,6 @@
 	<a href="index.jsp" class="link">Quay lại trang chủ</a>
     </div>
     </form>
-	</c:if>
     
 
     <script src="js/form.js"></script>
