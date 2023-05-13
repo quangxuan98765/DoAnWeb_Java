@@ -32,7 +32,7 @@ public class XulyDangKy extends HttpServlet {
 		String mail= request.getParameter("email");
 		String tk= request.getParameter("username");
 		String mk= request.getParameter("password");
-		System.out.println(hoten + " " + mail + " " + tk + " " + mk);
+
 		User_model kh = new User_model(tk, mk, mail, hoten);
 		boolean success = new User_DAO().themTaiKhoan(kh);
 		if (success) {

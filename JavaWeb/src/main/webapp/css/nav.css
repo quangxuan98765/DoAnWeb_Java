@@ -40,7 +40,6 @@
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border: 1px solid #d1d1d1;
-    text-transform: capitalize;
     background: none;
     color: #9a9a9a;
     outline: none;
@@ -86,7 +85,7 @@
 
 .link{
     text-transform: capitalize;
-    margin: 0 5px;
+    margin: 0 7px;
     text-decoration: none;
     color: #383838;
     opacity: 1;

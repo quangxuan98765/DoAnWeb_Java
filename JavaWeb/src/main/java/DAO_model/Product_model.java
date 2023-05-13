@@ -1,10 +1,12 @@
 package DAO_model;
 
 public class Product_model {
-	private String masp, tensp, hinhsp, motasp, img1, igm2, img3;
-	private int giasp, brand_name, category_name;
+	private String masp, tensp, hinhsp, motasp, img1, igm2, img3 ,brand_name, category_name;
+	private double giasp;
+	private int brands_id, cate_id;
 	
-	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3, int giasp) {
+	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
+			double giasp, int brands_id, int cate_id) {
 		super();
 		this.masp = masp;
 		this.tensp = tensp;
@@ -14,18 +16,15 @@ public class Product_model {
 		this.igm2 = igm2;
 		this.img3 = img3;
 		this.giasp = giasp;
+		this.brands_id = brands_id;
+		this.cate_id = cate_id;
 	}
-
-	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
-			int giasp, int brand_name, int category_name) {
+	
+	public Product_model(String masp, String tensp, String motasp, double giasp, String brand_name, String category_name) {
 		super();
 		this.masp = masp;
 		this.tensp = tensp;
-		this.hinhsp = hinhsp;
 		this.motasp = motasp;
-		this.img1 = img1;
-		this.igm2 = igm2;
-		this.img3 = img3;
 		this.giasp = giasp;
 		this.brand_name = brand_name;
 		this.category_name = category_name;
@@ -73,28 +72,45 @@ public class Product_model {
 	public void setImg3(String img3) {
 		this.img3 = img3;
 	}
-	public int getGiasp() {
+	public double getGiasp() {
 		return giasp;
 	}
-	public void setGiasp(int giasp) {
+	public void setGiasp(double giasp) {
 		this.giasp = giasp;
 	}
 	
-	public int getbrand_name() {
+	public String getbrand_name() {
 		return brand_name;
 	}
 
-	public void setbrand_name(int brand_name) {
+	public void setbrand_name(String brand_name) {
 		this.brand_name = brand_name;
 	}
 
-	public int getcategory_name() {
+	public String getcategory_name() {
 		return category_name;
 	}
 
-	public void setcategory_name(int category_name) {
+	public void setcategory_name(String category_name) {
 		this.category_name = category_name;
 	}
+	
+	public int getBrands_id() {
+		return brands_id;
+	}
+
+	public void setBrands_id(int brands_id) {
+		this.brands_id = brands_id;
+	}
+
+	public int getCate_id() {
+		return cate_id;
+	}
+
+	public void setCate_id(int cate_id) {
+		this.cate_id = cate_id;
+	}
+
 
 	@Override
 	public String toString() {

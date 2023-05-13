@@ -12,58 +12,76 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.Part;
 
 public class Product_DAO {
-	public boolean insert(Object obj) {
+	public boolean insert(Object obj, List<Part> fileParts) {
 		Product_model p = (Product_model) obj;
 		try {
 			Connection conn = ConnectionClass.getConnection();
-			int loaiSP = p.getcategory_name();
-			int brand = p.getbrand_name();
+			String loaiSP = p.getcategory_name();
+			String brand = p.getbrand_name();
 
 			String query = "SELECT * FROM category WHERE category_name=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, loaiSP);
+			ps.setString(1, loaiSP);
 			ResultSet rs = ps.executeQuery();
 			int category_id = rs.getInt("id");
 			
 			String query1 = "SELECT * FROM category WHERE brand_name=?";
 			PreparedStatement ps1 = conn.prepareStatement(query1);
-			ps.setInt(1, brand);
+			ps.setString(1, brand);
 			ResultSet rs1 = ps1.executeQuery();
 			int brand_id = rs1.getInt("id");
-			
-			Statement stmt = conn.createStatement();
-			String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, category_id, brand_id) VALUES ('" + p.getMasp() + "', '" + p.getTensp() + "', '" + p.getHinhsp() +  "', '" + p.getMotasp() +  "', '" + p.getGiasp() +  "', '" + category_id +  "', '" + brand_id + "')";
-			stmt.executeUpdate(sql);
-			stmt.close();
-			conn.close();
-			return true;
+
+			// Upload hình sản phẩm và lưu đường dẫn vào danh sách hình SP
+			List<String> hinhSPs = new ArrayList<>();
+			boolean uploadSuccess = uploadHinh(hinhSPs, fileParts);
+
+			if (uploadSuccess) {
+				// Thêm sản phẩm vào database
+				String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, p.getMasp());
+				pstmt.setString(2, p.getTensp());
+				pstmt.setString(3, hinhSPs.get(0)); // Lấy đường dẫn ảnh đầu tiên
+				pstmt.setString(4, p.getMotasp());
+				pstmt.setDouble(5, p.getGiasp());
+				pstmt.setString(6, hinhSPs.get(1));
+				pstmt.setString(7, hinhSPs.get(2));
+				pstmt.setString(8, hinhSPs.get(3));
+				pstmt.setInt(9, category_id);
+				pstmt.setInt(10, brand_id);
+				pstmt.executeUpdate();
+				pstmt.close();
+				conn.close();
+				return true;
+			} else {
+				return false;
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return false;
 		}
 	}
+
 	
 	public boolean update(Object obj, int id) {
 		Product_model p = (Product_model) obj;
 		try {
 			Connection conn = ConnectionClass.getConnection();
-			int loaiSP = p.getcategory_name();
-			int brand = p.getbrand_name();
+			String loaiSP = p.getcategory_name();
+			String brand = p.getbrand_name();
 			
 			String query = "SELECT * FROM category WHERE category_name=?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, loaiSP);
+			ps.setString(1, loaiSP);
 			ResultSet rs = ps.executeQuery();
 			int category_id = rs.getInt("id");
 			
 			String query1 = "SELECT * FROM category WHERE brand_name=?";
 			PreparedStatement ps1 = conn.prepareStatement(query1);
-			ps.setInt(1, brand);
+			ps.setString(1, brand);
 			ResultSet rs1 = ps1.executeQuery();
 			int brand_id = rs1.getInt("id");
 			
@@ -104,38 +122,40 @@ public class Product_DAO {
 		
 	}
 	
-	public boolean uploadHinh(String hinhSP, Part filePart) {
-		String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // lấy tên tệp đính kèm
-		// thư mục đích để lưu trữ tệp được tải lên
-		String uploadDir = "/path/JavaWeb/src/main/webapp/img/product/"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
-//		Đường dẫn tuyệt đối: /home/user/myproject/img/product/
-//		Đường dẫn tương đối: ../img/product/
-		
-		// kiểm tra và tạo thư mục đích nếu nó không tồn tại
-		File uploadDirFile = new File(uploadDir);
-		if (!uploadDirFile.exists()) {
-		    uploadDirFile.mkdir();
-		}
+	public boolean uploadHinh(List<String> hinhSPs, List<Part> fileParts) {
+	    // kiểm tra và tạo thư mục đích nếu nó không tồn tại
+	    String uploadDir = "/path/JavaWeb/src/main/webapp/img/product/"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
+	    File uploadDirFile = new File(uploadDir);
+	    if (!uploadDirFile.exists()) {
+	        uploadDirFile.mkdir();
+	    }
 
-		// tạo đường dẫn đầy đủ của tệp được tải lên
-		String filePath = uploadDir + File.separator + fileName;
-		File uploadedFile = new File(filePath);
+	    // upload từng file
+	    boolean allSuccess = true;
+	    for (Part filePart : fileParts) {
+	        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // lấy tên tệp đính kèm
+	        
+	        // tạo đường dẫn đầy đủ của tệp được tải lên
+	        String filePath = uploadDir + File.separator + fileName;
+	        File uploadedFile = new File(filePath);
 
-		try {
-		    // ghi tệp vào đĩa
-		    InputStream input = filePart.getInputStream();
-		    Files.copy(input, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		    input.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		    return false;
-		}
+	        try {
+	            // ghi tệp vào đĩa
+	            InputStream input = filePart.getInputStream();
+	            Files.copy(input, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	            input.close();
 
-		// lưu đường dẫn tệp vào biến hinhSP
-		hinhSP = filePath;
+	            // lưu đường dẫn tệp vào biến hinhSPs
+	            hinhSPs.add(filePath);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            allSuccess = false;
+	        }
+	    }
 
-		return true;
+	    return allSuccess;
 	}
+
 	
 	public List<Product_model> getAllProduct() {
 		try {
