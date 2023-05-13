@@ -25,7 +25,7 @@
             <div id="error-msg">${error}</div>
             <input type="password" autocomplete="off" id="password" name="password" placeholder="Mật Khấu">
             <button class="submit-btn" type="submit">Đăng nhập</button>
-            <a href="sigup.jsp" class="link">Chưa có tài khoản? Đăng ký</a>
+            <a href="XulyDangKy" class="link">Chưa có tài khoản? Đăng ký</a>
         </form>
     </div>
 </body>

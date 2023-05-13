@@ -38,11 +38,11 @@ public class XulyDangNhap extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             //out.println("true");
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("Index");
         } else {
             String erorr = "Sai tên đăng nhập hoặc mật khẩu";
             request.setAttribute("error", erorr);
-            request.getRequestDispatcher("login.jsp").include(request, response);
+            request.getRequestDispatcher("XulyDangNhap").include(request, response);
         }
 	}
 

@@ -33,8 +33,8 @@
             <label for="notification">nhận thông báo về những ưu đãi mới nhất</label>
             <button class="submit-btn" type="submit">Tạo Tài Khoản</button>
         </div>
-        <a href="login.jsp" class="link">Đã có tài khoản? Nhấn để đăng nhập</a>
-	<a href="index.jsp" class="link">Quay lại trang chủ</a>
+        <a href="XulyDangNhap" class="link">Đã có tài khoản? Nhấn để đăng nhập</a>
+	<a href="Index" class="link">Quay lại trang chủ</a>
     </div>
     </form>
     

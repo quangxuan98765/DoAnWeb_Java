@@ -19,7 +19,6 @@ public class Product_DAO {
 	public boolean insert(Object obj) {
 		Product_model p = (Product_model) obj;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = ConnectionClass.getConnection();
 			int loaiSP = p.getcategory_name();
 			int brand = p.getbrand_name();
@@ -52,7 +51,6 @@ public class Product_DAO {
 	public boolean update(Object obj, int id) {
 		Product_model p = (Product_model) obj;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = ConnectionClass.getConnection();
 			int loaiSP = p.getcategory_name();
 			int brand = p.getbrand_name();
@@ -91,7 +89,6 @@ public class Product_DAO {
 	
 	public boolean delete(int id) {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = ConnectionClass.getConnection();
 			Statement stmt = conn.createStatement();
 			String sql = "DELETE FROM sanpham WHERE sanpham.id = " + id;
@@ -143,7 +140,6 @@ public class Product_DAO {
 	public List<Product_model> getAllProduct() {
 		try {
 			List<Product_model> plist = new ArrayList<>();
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = ConnectionClass.getConnection();
 			String sql = "SELECT * FROM sanpham";
 			PreparedStatement stmt = conn.prepareStatement(sql);

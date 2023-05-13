@@ -37,11 +37,11 @@ public class XulyDangKy extends HttpServlet {
 		boolean success = new User_DAO().themTaiKhoan(kh);
 		if (success) {
             // Nếu thêm tài khoản thành công thì chuyển hướng về trang đăng nhập
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("XulyDangNhap");
         } else {
             // Nếu thêm tài khoản thất bại thì hiển thị thông báo lỗi
             //request.setAttribute("errorMsg", "Đăng ký tài khoản thất bại. Vui lòng thử lại!");
-            request.getRequestDispatcher("sigup.jsp").forward(request, response);
+            request.getRequestDispatcher("XulyDangKy").forward(request, response);
         }
 	}
 

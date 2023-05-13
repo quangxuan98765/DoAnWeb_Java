@@ -21,36 +21,31 @@
 				<button class="search-btn">Tìm kiếm</button>
 			</div>
 			<a>
-				 <img src="img/user.png" id="user-img" alt="">
-				 <%
-					 String username = (String) session.getAttribute("username");
-					 if (username != null) {
-				  %>
-				<div class="login-logout-popup">
-					<p class="account-info">
-						Đang đăng nhập
-						<%=username%></p>
-					<form action="DangXuat" method="get">
-						<button class="btn" id="user-btn" type="submit">đăng xuất</button>
-					</form>
-				</div> 
-				<%
-				} else {
-				%>
-				<div class="login-logout-popup">
-					<p class="account-info">Chưa đăng nhập</p>
-					<button class="btn" id="user-btn">đăng nhập</button>
-				</div>
-				<script>
-	                document.getElementById("user-btn").addEventListener("click", function() {
-	                    window.location.href = "login.jsp";
-	                });
-	            </script>
-				<%
- 				}
-				%>
-
-			</a> <a href="historycart.html"><img src="img/history.png"></a> <a
+    <img src="img/user.png" id="user-img" alt="">
+    <c:if test="${not empty sessionScope.username}">
+        <div class="login-logout-popup">
+            <p class="account-info">
+                Đang đăng nhập
+                ${sessionScope.username}
+            </p>
+            <form action="DangXuat" method="get">
+                <button class="btn" id="user-btn" type="submit">đăng xuất</button>
+            </form>
+        </div> 
+    </c:if>
+    <c:if test="${empty sessionScope.username}">
+        <div class="login-logout-popup">
+            <p class="account-info">Chưa đăng nhập</p>
+            <button class="btn" id="user-btn">đăng nhập</button>
+        </div>
+        <script>
+            document.getElementById("user-btn").addEventListener("click", function() {
+                window.location.href = "XulyDangNhap";
+            });
+        </script>
+    </c:if>
+</a>
+ <a href="historycart.html"><img src="img/history.png"></a> <a
 				href="cart.html"><img src="img/cart.png"></a>
 		</div>
 	</div>
@@ -89,106 +84,11 @@
 				<div class="product-info">
 					<h2 class="product-brand">${p.tensp}</h2>
 					<p class="product-short-des">${p.motasp }</p>
-					<span class="actual-price">${p.giasp}₫</span>
+					<span class="price">${p.giasp}₫</span>
 				</div>
 			</div>
 		</c:forEach>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 20%</span> <img
-						src="img/pro1.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Sister of Battle Power Armor</h2>
-					<p class="product-short-des">Power Armor</p>
-					<span class="price">280.000₫</span><span class="actual-price">350.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 25%</span> <img
-						src="img/pro3.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Inquisition Sister of Battle Power
-						Armor</h2>
-					<p class="product-short-des">Power Armor of inquisition</p>
-					<span class="price">270.000₫</span><span class="actual-price">360.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 10%</span> <img
-						src="img/pro4.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Flak Armor</h2>
-					<p class="product-short-des">Armor of Imperial Guard</p>
-					<span class="price">360.000₫</span><span class="actual-price">400.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 10%</span> <img
-						src="img/pro5.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Adeptus Arbites Armor</h2>
-					<p class="product-short-des">Power Armor</p>
-					<span class="price">270.000₫</span><span class="actual-price">300.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 50%</span> <img
-						src="img/pro2.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Nun sister of battle</h2>
-					<p class="product-short-des">Power Armor</p>
-					<span class="price">230.000₫</span><span class="actual-price">460.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 30%</span> <img
-						src="img/pro7.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Witch Hunter Power Armor</h2>
-					<p class="product-short-des">Power Armor</p>
-					<span class="price">280.000₫</span><span class="actual-price">400.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 30%</span> <img
-						src="img/pro8.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Inquisiton Power Armor</h2>
-					<p class="product-short-des">Power Armor</p>
-					<span class="price">266.000₫</span><span class="actual-price">380.000₫</span>
-				</div>
-			</div>
-
-		</div>
-	</section>
-
+		
 	<section class="product">
 		<h2 class="product-category">
 			Sản phẩm bán chạy <img src="img/bestsell.png">
@@ -306,99 +206,6 @@
 			</div>
 		</div>
 	</section>
-
-	<section class="product">
-		<h2 class="product-category">
-			Đang giảm giá sốc <img src="img/hotsell.png">
-		</h2>
-		<button class="pre-btn">
-			<img src="img/arrow.png" alt="">
-		</button>
-		<button class="nxt-btn">
-			<img src="img/arrow.png" alt="">
-		</button>
-		<div class="product-container">
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 30%</span> <img
-						src="img/card3.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Blood Ravens Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">280.000₫</span><span class="actual-price">400.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 30%</span> <img
-						src="img/card4.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Exorcists Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">266.000₫</span><span class="actual-price">380.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 25%</span> <img
-						src="img/card5.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Fire Lords Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">337.500₫</span><span class="actual-price">450.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 25%</span> <img
-						src="img/card6.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Iron Hands Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">270.000₫</span><span class="actual-price">360.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 15%</span> <img
-						src="img/card7.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Knights of the Chalice Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">306.000₫</span><span class="actual-price">360.000₫</span>
-				</div>
-			</div>
-			<div class="product-card">
-				<div class="product-image">
-					<span class="discount-tag">đang giảm 15%</span> <img
-						src="img/card8.png" class="product-thumb" alt=""
-						onclick="location.href='product.html'">
-					<button class="card-btn">thêm vào giỏ hàng</button>
-				</div>
-				<div class="product-info">
-					<h2 class="product-brand">Rift Stalkers Primaris</h2>
-					<p class="product-short-des">Mark X Tacticus Power Armor</p>
-					<span class="price">297.500₫</span><span class="actual-price">350.000₫</span>
-				</div>
-			</div>
-		</div>
-	</section>
-
 
 	<!--collections-->
 	<h2 class="title-colection">Mục đáng chú ý</h2>
