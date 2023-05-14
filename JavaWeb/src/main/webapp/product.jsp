@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,42 +9,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product - </title>
 
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/searchIndex.css">
 </head>
 <body>
-    <nav class="navbar"></nav>
+    <div class="nav">
+		<img src="img/dark-logo.png" class="brand-logo" alt="">
+		<div class="nav-items">
+			<div class="search">
+				<input type="text" class="search-box"
+					placeholder="Tìm tên thương hiệu, sản phẩm...">
+				<button class="search-btn">Tìm kiếm</button>
+			</div>
+			<a>
+    <img src="img/user.png" id="user-img" alt="">
+    <div class="login-logout-popup hide">
+    <c:if test="${not empty sessionScope.username}">
+            <p class="account-info">
+                Đang đăng nhập
+                ${sessionScope.username}
+            </p>
+            <form action="DangXuat" method="get">
+                <button class="btn" id="user-btn" type="submit">đăng xuất</button>
+            </form>
+    </c:if>
+    <c:if test="${empty sessionScope.username}">
+            <p class="account-info">Chưa đăng nhập</p>
+            <button class="btn" id="user-btn">đăng nhập</button>
+        <script>
+            document.getElementById("user-btn").addEventListener("click", function() {
+                window.location.href = "XulyDangNhap";
+            });
+        </script>
+    </c:if>
+    </div>
+</a>
+ <a href="historycart.html"><img src="img/history.png"></a> <a
+				href="cart.html"><img src="img/cart.png"></a>
+		</div>
+	</div>
+	<ul class="links-container">
+		<li class="link-item"><a href="index.php" class="link"><img src="img/home.png">Trang chủ</li>
+	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
+	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
+	    <li class="link-item"><a class="link"></li>
+	</ul>
+	
+	<script>
+    const userImageButton = document.getElementById("user-img");
+    const userPop = document.querySelector('.login-logout-popup');
+    userImageButton.addEventListener('click', () =>{
+        userPop.classList.toggle('hide');
+    })
+</script>
 
     <section class="product-details">
         <div class="image-slider">
-            <div class="product-images">
-                <img src="img/product image 1.png" class="active" alt="">
-                <img src="img/product image 2.png" alt="">
-                <img src="img/product image 3.png" alt="">
-                <img src="img/product image 4.png" alt="">
-            </div>
+            <c:if test="${not empty result}">
+			  <c:set var="row" value="${sp}" />
+			  <img class="lon" id="large-image" src="${row.HinhSP}" style="width: 620px; height: 412px;">
+			  <div class="anhsp" style="width: 630px">
+			    <img class="small-image" src="${row.more_img}" style="width: 200px; height: 133px;">
+			    <img class="small-image" src="${row.more_img1}" style="width: 200px; height: 133px;">
+			    <img class="small-image" src="${row.more_img2}" style="width: 200px; height: 133px;">
+			  </div>
+			  <c:set var="originalLargeImageSrc" value="${row.HinhSP}" />
+			</c:if>
+            <!-- ----------------script------------------------------- -->
+        <script>
+            var smallImages = document.getElementsByClassName("small-image");
+            var largeImage = document.getElementById("large-image");
+            var originalLargeImageSrc = "${originalLargeImageSrc}"; // Retrieve the original source of the large image
+            for (var i = 0; i < smallImages.length; i++) {
+                smallImages[i].addEventListener("click", function() {
+                    var src = this.getAttribute("src");
+                    largeImage.setAttribute("src", src);
+                });
+            }
+
+            // Add a click event listener to the large image to reset its source to the original source
+            largeImage.addEventListener("click", function() {
+                largeImage.setAttribute("src", originalLargeImageSrc);
+            });
+
+
+            function check_addToCart() {
+                // Hiển thị thông báo và lựa chọn xác nhận hoặc hủy
+                if (confirm('Bạn cần đăng nhập để mua hàng. Nhấn OK để chuyển đến trang đăng nhập.')) {
+                    // Chuyển hướng đến trang đăng nhập
+                    window.location.href = 'login.jsp';
+                }
+            }
+
+            function addToCart(productId) {
+			// Tạo đối tượng XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+
+                // Thiết lập hàm callback khi có phản hồi từ máy chủ
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        // Xử lý phản hồi từ máy chủ
+                        document.getElementById("cart-status").innerHTML = "Đã thêm vào giỏ hàng";
+                    }
+                };
+
+                // Thiết lập yêu cầu POST với địa chỉ URL của trang xử lý yêu cầu và dữ liệu cần gửi đi
+                xhr.open("POST", "addToCart.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("id=" + productId);
+            }
+        </script>
+        <!-- ----------------script------------------------------- -->
         </div>
         <div class="details">
-            <h2 class="product-brand">Custodes Armor</h2>
-            <p class="product-short-des">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            <span class="product-price">250.000₫</span>
-            <span class="product-atual-price">500.000₫</span>
-            <span class="product-discount">(50%off)</span>
-
-            <p class="product-sub-heading">chọn size</p>
-
-            <input type="radio" name="size" value="s" checked hidden id="s-size">
-            <label for="s-size" class="size-radio-btn check">s</label>
-            <input type="radio" name="size" value="m" hidden id="m-size">
-            <label for="m-size" class="size-radio-btn">m</label>
-            <input type="radio" name="size" value="l" hidden id="l-size">
-            <label for="l-size" class="size-radio-btn">l</label>
-            <input type="radio" name="size" value="xl" hidden id="xl-size">
-            <label for="xl-size" class="size-radio-btn">xl</label>
-            <input type="radio" name="size" value="xxl" hidden id="xxl-size">
-            <label for="xxl-size" class="size-radio-btn">xxl</label>
-
-            <button class="btn cart-btn">thêm vào giỏ hàng</button>
+		<c:set var="row" value="${sp}"/>
+			<h2 class="product-brand">${row.tensp}</h2>
+			<p class="product-short-des">${row.motasp}</p>
+			<span class="product-price">${row.giasp } vnđ</span><br>
+			<i>Thông số chi tiết</i>
+			<div class="st-param">
+				<ul>
+				<li data-info="Màn hình">
+					<span class="icon-screen-size"></span>
+					<p>15.6 inch, 1920 x 1080 Pixels, IPS, 144 Hz, Anti-glare LED-backlit</p>
+				</li>
+				<li data-info="CPU">
+					<span class="icon-cpu"></span>
+					<p>Intel, Core i5, 10300H</p>
+				</li>
+				<li data-info="RAM">
+					<span class="icon-ram"></span>
+					<p>8 GB (1 thanh 8 GB), DDR4, 2933 MHz</p>
+				</li>
+				<li data-info="Ổ cứng">
+					<span class="icon-hdd-black"></span>
+					<p>SSD 512 GB</p>
+				</li>
+				<li data-info="Đồ họa">
+					<span class="icon-vga"></span>
+					<p>NVIDIA GeForce GTX 1650 4GB; Intel UHD Graphics</p>
+				</li>
+				</ul>
+				<a class="re-link js--open-modal2">Xem chi tiết thông số kỹ thuật</a>
+		</div>
+		<c:if test="${not empty sessionScope.username}">
+			<button class="btn cart-btn" onclick="addToCart(${row.masp})">thêm vào giỏ hàng</button>
+		</c:if>
+		<c:if test="${empty sessionScope.username}">
+			<button class="btn cart-btn" onclick="check_addToCart()">thêm vào giỏ hàng</button>
+		</c:if>
+		<span id="cart-status"></span>
         </div>
     </section>
 

@@ -5,6 +5,8 @@ public class Product_model {
 	private double giasp;
 	private int brands_id, cate_id;
 	
+	public Product_model() {}
+	
 	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
 			double giasp, int brands_id, int cate_id) {
 		super();

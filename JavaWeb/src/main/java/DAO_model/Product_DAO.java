@@ -161,6 +161,32 @@ public class Product_DAO {
 
 	    return allSuccess;
 	}
+	
+	public Product_model get(String ma) {
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			Statement stmt = conn.createStatement();
+			String sql = "SELECT * FROM sanpham WHERE MaSP = '" + ma + "'";
+			ResultSet rs = stmt.executeQuery(sql);
+			Product_model p = new Product_model();
+			if(rs.next()) {
+				p.setTensp(rs.getString("TenSP"));
+				p.setMotasp(rs.getString("MoTaSP"));
+				p.setGiasp(rs.getDouble("GiaSP"));
+				p.setHinhsp(rs.getString("HinhSP"));
+				p.setImg1(rs.getString("more_img"));
+				p.setIgm2(rs.getString("more_img1"));
+				p.setImg3(rs.getString("more_img2"));
+			}
+			stmt.close();
+			conn.close();
+			return p;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	
 	public List<Product_model> getAllProduct() {

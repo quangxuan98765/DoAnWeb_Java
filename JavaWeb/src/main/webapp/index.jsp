@@ -108,8 +108,10 @@
 		<c:forEach items="${plist}" var="p">
 		<div class="product-card">
 				<div class="product-image">
-					<img src="${p.hinhsp }" class="product-thumb" onclick="location.href='product.html'">
+				<a href="Product?Masp=${p.masp }">
+					<img src="${p.hinhsp }" class="product-thumb">
 					<button class="card-btn">thêm vào giỏ hàng</button>
+				</a>
 				</div>
 				<div class="product-info">
 					<h2 class="product-brand">${p.tensp}</h2>
