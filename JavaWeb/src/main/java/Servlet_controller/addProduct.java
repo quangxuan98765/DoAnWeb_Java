@@ -32,7 +32,7 @@ public class addProduct extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/addProduct.jsp").forward(request, response);
 	}
 
 	/**
@@ -62,7 +62,8 @@ public class addProduct extends HttpServlet {
 		
 		Product_model p = new Product_model(maSP, tenSP, motaSP, giaSP, brands, loaiSP);
 		new Product_DAO().insert(p, hinhSPs);
-		request.setAttribute("message", "Thêm sản phẩm thành công");
+		//request.setAttribute("message", "Thêm sản phẩm thành công");
+		response.sendRedirect("Index");
 	}
 
 }

@@ -26,13 +26,19 @@ public class Product_DAO {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, loaiSP);
 			ResultSet rs = ps.executeQuery();
-			int category_id = rs.getInt("id");
-			
-			String query1 = "SELECT * FROM category WHERE brand_name=?";
+			int category_id = -1;
+			if (rs.next()) { // Move cursor to first row
+			    category_id = rs.getInt("id");
+			}
+
+			String query1 = "SELECT * FROM brands WHERE brand_name=?";
 			PreparedStatement ps1 = conn.prepareStatement(query1);
-			ps.setString(1, brand);
+			ps1.setString(1, brand);
 			ResultSet rs1 = ps1.executeQuery();
-			int brand_id = rs1.getInt("id");
+			int brand_id = -1;
+			if (rs1.next()) { // Move cursor to first row
+			    brand_id = rs1.getInt("id");
+			}
 
 			// Upload hình sản phẩm và lưu đường dẫn vào danh sách hình SP
 			List<String> hinhSPs = new ArrayList<>();
@@ -124,7 +130,7 @@ public class Product_DAO {
 	
 	public boolean uploadHinh(List<String> hinhSPs, List<Part> fileParts) {
 	    // kiểm tra và tạo thư mục đích nếu nó không tồn tại
-	    String uploadDir = "/path/JavaWeb/src/main/webapp/img/product/"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
+	    String uploadDir = "../JavaWeb/img/product/";//"C:\\Users\\ACER\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\JavaWeb\\img\\product"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
 	    File uploadDirFile = new File(uploadDir);
 	    if (!uploadDirFile.exists()) {
 	        uploadDirFile.mkdir();

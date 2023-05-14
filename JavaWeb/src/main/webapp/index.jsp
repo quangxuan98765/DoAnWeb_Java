@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -7,9 +8,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARMOR-SHOP</title>
-<link rel="stylesheet" href="css/home.css">
-<link rel="stylesheet" href="css/admin.css">
-<link rel="stylesheet" href="css/searchIndex.css">
+	<link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/searchIndex.css">
+    <link rel="stylesheet" href="css/page.css">
+    
+    <link rel="stylesheet" href="css/alert.css">
 </head>
 <body>
 	<div class="nav">
@@ -22,8 +26,8 @@
 			</div>
 			<a>
     <img src="img/user.png" id="user-img" alt="">
+    <div class="login-logout-popup hide">
     <c:if test="${not empty sessionScope.username}">
-        <div class="login-logout-popup">
             <p class="account-info">
                 Đang đăng nhập
                 ${sessionScope.username}
@@ -31,19 +35,17 @@
             <form action="DangXuat" method="get">
                 <button class="btn" id="user-btn" type="submit">đăng xuất</button>
             </form>
-        </div> 
     </c:if>
     <c:if test="${empty sessionScope.username}">
-        <div class="login-logout-popup">
             <p class="account-info">Chưa đăng nhập</p>
             <button class="btn" id="user-btn">đăng nhập</button>
-        </div>
         <script>
             document.getElementById("user-btn").addEventListener("click", function() {
                 window.location.href = "XulyDangNhap";
             });
         </script>
     </c:if>
+    </div>
 </a>
  <a href="historycart.html"><img src="img/history.png"></a> <a
 				href="cart.html"><img src="img/cart.png"></a>
@@ -55,13 +57,41 @@
 	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
 	    <li class="link-item"><a class="link"></li>
 	</ul>
-	<!--hero section-->
-	<header class="hero-section">
-		<div class="content">
-			<img src="img/light-logo.png" class="logo" alt="">
-			<p class="sub-heading">Biến chiến trường thành sân khấu của bạn</p>
-		</div>
-	</header>
+	
+	<script>
+    const userImageButton = document.getElementById("user-img");
+    const userPop = document.querySelector('.login-logout-popup');
+    userImageButton.addEventListener('click', () =>{
+        userPop.classList.toggle('hide');
+    })
+</script>
+    <!--hero section-->
+    <header class="hero-section">
+        <div class="content">
+            <img src="img/light-logo.png" class="logo" alt="">
+            <p class="sub-heading">Yamateeeee kudasai</p>
+        </div>
+    </header>
+
+    	<div class="box">
+                <a class="titlefilter">Bộ lọc <img src="img/filter.png"></a>
+
+           <a class="nameselect-combo">Giá</a>
+           <select id="select-cost" class="select-combo">
+               <option value="">chọn khoảng giá</option>
+               <option value="`%s`<7000000">dưới 7 triệu</option>
+               <option value="`%s`>=5000000 AND `%s`<15000000">từ 5 tới 15 triệu</option>
+               <option value="`%s`>=15000000 AND `%s`< 30000000">từ 15 tới 30 triệu</option>
+               <option value="`%s`>=30000000">trên 30 triệu</option>
+           </select>
+       <div class="box">
+           <select id="select-sort" class="select select-combo">
+               <option value="">Xếp theo: Nổi bật</option>
+               <option value="ASC">Giá từ thấp đến cao</option>
+               <option value="DESC">Giá từ cao đến thấp</option>
+           </select>
+       </div>
+    </div>
 
 	<!--cards-container-->
 	<section class="product">
@@ -86,10 +116,12 @@
 					<p class="product-short-des">${p.motasp }</p>
 					<span class="price">${p.giasp}₫</span>
 				</div>
-			</div>
+			</div>	
 		</c:forEach>
-		
-	<section class="product">
+		</div>
+		</section>
+                <div class="order-page"></div>
+	<!-- <section class="product">
 		<h2 class="product-category">
 			Sản phẩm bán chạy <img src="img/bestsell.png">
 		</h2>
@@ -205,42 +237,36 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 
-	<!--collections-->
-	<h2 class="title-colection">Mục đáng chú ý</h2>
-	<section class="collection-container">
-		<a href="womenarmor.html" class="collection"> <img
-			src="img/women-collection.png" alt="">
-			<p class="collection-title">
-				women <br> armor
-			</p>
-		</a> <a href="menarmor.html" class="collection"> <img
-			src="img/men-collection.png" alt="">
-			<p class="collection-title">
-				Man <br> armor
-			</p>
-		</a> <a href="accessories.html" class="collection"> <img
-			src="img/accessories-collection.png" alt="">
-			<p class="collection-title">phụ kiện</p>
-		</a>
-	</section>
-	</div>
-	</div>
-	</section>
 
-	<script>
-	   const userImageButton = document.querySelector('#user-img');
-	   const userPop = document.querySelector('.login-logout-popup');
-	   const popuptext = document.querySelector('.account-info');
-	   const actionBtn = document.querySelector('#user-btn');
-	
-	   userImageButton.addEventListener('click', () =>{
-	       userPop.classList.toggle('hide');
-	   })
-   </script>
+	<ul class="list_page"></ul>
+    <!--collections-->
+    <h2 class="title-colection">Mục đáng chú ý</h2>
+    <section class="collection-container">
+        <a href="laptopProduct.php" class="collection">
+            <img src="img/quangcao.jpg" alt="">
+        </a>
+    </section>
+            </div>
+        </div>
+    </section>
 
-	<script src="js/home.js"></script>
-	<script src="js/footer.js"></script>
+    <footer></footer>
+
+    <script type="module"> 
+    import { newFunc } from "./js/searchBar.js";
+     document.querySelectorAll(".select-combo").forEach((e) => {
+    e.addEventListener("change", () => {
+      document.querySelectorAll(".product").forEach(function(e){
+        e.innerHTML = "";})
+      newFunc();
+    });
+})
+    </script>
+    <script src="js/search.js"></script>
+
+    <script src="js/home.js"></script>
+    <script src="js/footer.js"></script>
 </body>
 </html>
