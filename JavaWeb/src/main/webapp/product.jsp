@@ -67,16 +67,14 @@
 
     <section class="product-details">
         <div class="image-slider">
-            <c:if test="${not empty result}">
 			  <c:set var="row" value="${sp}" />
-			  <img class="lon" id="large-image" src="${row.HinhSP}" style="width: 620px; height: 412px;">
+			  <img class="lon" id="large-image" src="${row.hinhsp}" style="width: 620px; height: 412px;">
 			  <div class="anhsp" style="width: 630px">
-			    <img class="small-image" src="${row.more_img}" style="width: 200px; height: 133px;">
-			    <img class="small-image" src="${row.more_img1}" style="width: 200px; height: 133px;">
-			    <img class="small-image" src="${row.more_img2}" style="width: 200px; height: 133px;">
+			    <img class="small-image" src="${row.img1}" style="width: 200px; height: 133px;">
+			    <img class="small-image" src="${row.igm2}" style="width: 200px; height: 133px;">
+			    <img class="small-image" src="${row.img3}" style="width: 200px; height: 133px;">
 			  </div>
-			  <c:set var="originalLargeImageSrc" value="${row.HinhSP}" />
-			</c:if>
+			  <c:set var="originalLargeImageSrc" value="${row.hinhsp}" />
             <!-- ----------------script------------------------------- -->
         <script>
             var smallImages = document.getElementsByClassName("small-image");
@@ -123,6 +121,7 @@
         </script>
         <!-- ----------------script------------------------------- -->
         </div>
+        <form method="post" action="Cart">
         <div class="details">
 		<c:set var="row" value="${sp}"/>
 			<h2 class="product-brand">${row.tensp}</h2>
@@ -162,6 +161,7 @@
 		</c:if>
 		<span id="cart-status"></span>
         </div>
+        </form>
     </section>
 
     <section class="detail-des">

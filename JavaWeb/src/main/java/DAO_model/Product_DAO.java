@@ -130,7 +130,7 @@ public class Product_DAO {
 	
 	public boolean uploadHinh(List<String> hinhSPs, List<Part> fileParts) {
 	    // kiểm tra và tạo thư mục đích nếu nó không tồn tại
-	    String uploadDir = "../JavaWeb/img/product/";//"C:\\Users\\ACER\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\JavaWeb\\img\\product"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
+	    String uploadDir = "C:\\Users\\ACER\\eclipse-workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\JavaWeb\\img\\product"; // thay đổi đường dẫn đến thư mục tải lên của bạn 
 	    File uploadDirFile = new File(uploadDir);
 	    if (!uploadDirFile.exists()) {
 	        uploadDirFile.mkdir();
