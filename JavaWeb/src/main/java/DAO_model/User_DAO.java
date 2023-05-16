@@ -26,7 +26,30 @@ public class User_DAO{
 		return false;
 	}
 	
-	//public boolean updateUser(User user) do an khong yeu cau
+	public boolean isAdmin(String username) {
+	    try {
+	        Connection conn = ConnectionClass.getConnection();
+	        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+	        ps.setString(1, username);
+	        ResultSet rs = ps.executeQuery();
+	        boolean isAdmin = false;
+	        if (rs.next()) { // Kiểm tra xem có bản ghi trong kết quả trả về hay không
+	            String role = rs.getString("role");
+	            if (role.equals("admin")) {
+	                isAdmin = true;
+	            }
+	        }
+	        rs.close();
+	        ps.close();
+	        conn.close();
+	        return isAdmin;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println(e.getMessage());
+	    }
+	    return false;
+	}
+
 	
 	public boolean checkLogin(String username, String password) {
 		try {

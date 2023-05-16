@@ -3,9 +3,25 @@ package DAO_model;
 public class Product_model {
 	private String masp, tensp, hinhsp, motasp, img1, igm2, img3 ,brand_name, category_name;
 	private double giasp;
-	private int brands_id, cate_id;
+	private int brands_id, cate_id, id;
 	
 	public Product_model() {}
+	
+	public Product_model(int id, String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
+			double giasp, int brands_id, int cate_id) {
+		super();
+		this.id = id;
+		this.masp = masp;
+		this.tensp = tensp;
+		this.hinhsp = hinhsp;
+		this.motasp = motasp;
+		this.img1 = img1;
+		this.igm2 = igm2;
+		this.img3 = img3;
+		this.giasp = giasp;
+		this.brands_id = brands_id;
+		this.cate_id = cate_id;
+	}
 	
 	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
 			double giasp, int brands_id, int cate_id) {
@@ -119,6 +135,14 @@ public class Product_model {
 		return "Product_model [masp=" + masp + ", tensp=" + tensp + ", hinhsp=" + hinhsp + ", motasp=" + motasp
 				+ ", img1=" + img1 + ", igm2=" + igm2 + ", img3=" + img3 + ", giasp=" + giasp + ", brand_name=" + brand_name
 				+ ", category_name=" + category_name + "]";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

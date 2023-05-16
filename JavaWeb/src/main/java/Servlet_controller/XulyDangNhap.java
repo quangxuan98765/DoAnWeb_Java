@@ -33,11 +33,16 @@ public class XulyDangNhap extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        
-        if (new User_DAO().checkLogin(username, password)) {
+        User_DAO t = new User_DAO();
+        if (t.checkLogin(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
-            //out.println("true");
+            
+            if (t.isAdmin(username)) {
+                session.setAttribute("role", "admin");
+            } else {
+                session.setAttribute("role", "normal");
+            }
             response.sendRedirect("Index");
         } else {
             String erorr = "Sai tên đăng nhập hoặc mật khẩu";

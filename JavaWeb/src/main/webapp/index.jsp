@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<ul class="links-container">
-		<li class="link-item"><a href="index.php" class="link"><img src="img/home.png">Trang chủ</li>
+		<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
 	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
 	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
 	    <li class="link-item"><a class="link"></li>
@@ -110,13 +110,21 @@
 				<div class="product-image">
 				<a href="Product?Masp=${p.masp }">
 					<img src="${p.hinhsp }" class="product-thumb">
-					<button class="card-btn">thêm vào giỏ hàng</button>
+					<c:choose>
+					  <c:when test="${sessionScope.role == 'admin'}">
+					  <button class="card-btn">thêm vào giỏ hàng</button>
+					    <a href="editProduct?id=${p.id }"><button class="card-action-btn edit-btn">Sửa</button></a>
+					  </c:when>
+					  <c:otherwise>
+					    <button class="card-btn">thêm vào giỏ hàng</button>
+					  </c:otherwise>
+					</c:choose>
 				</a>
 				</div>
 				<div class="product-info">
 					<h2 class="product-brand">${p.tensp}</h2>
 					<p class="product-short-des">${p.motasp }</p>
-					<span class="price">${p.giasp}₫</span>
+					<span class="price">${p.giasp}$</span>
 				</div>
 			</div>	
 		</c:forEach>

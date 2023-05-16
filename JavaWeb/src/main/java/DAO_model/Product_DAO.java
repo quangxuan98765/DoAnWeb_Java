@@ -40,10 +40,6 @@ public class Product_DAO {
 			    brand_id = rs1.getInt("id");
 			}
 
-			// Upload hình sản phẩm và lưu đường dẫn vào danh sách hình SP
-//			List<String> hinhSPs = new ArrayList<>();
-//			boolean uploadSuccess = uploadHinh(hinhSPs, fileParts);
-
 			String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, p.getMasp());
@@ -59,27 +55,6 @@ public class Product_DAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-//			if (uploadSuccess) {
-//				// Thêm sản phẩm vào database
-//				String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//				PreparedStatement pstmt = conn.prepareStatement(sql);
-//				pstmt.setString(1, p.getMasp());
-//				pstmt.setString(2, p.getTensp());
-//				pstmt.setString(3, hinhSPs.get(0)); // Lấy đường dẫn ảnh đầu tiên
-//				pstmt.setString(4, p.getMotasp());
-//				pstmt.setDouble(5, p.getGiasp());
-//				pstmt.setString(6, hinhSPs.get(1));
-//				pstmt.setString(7, hinhSPs.get(2));
-//				pstmt.setString(8, hinhSPs.get(3));
-//				pstmt.setInt(9, category_id);
-//				pstmt.setInt(10, brand_id);
-//				pstmt.executeUpdate();
-//				pstmt.close();
-//				conn.close();
-//				return true;
-//			} else {
-//				return false;
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -88,7 +63,7 @@ public class Product_DAO {
 	}
 
 	
-	public boolean update(Object obj, int id) {
+	public boolean update(Object obj, String id, List<String> hinhSPs) {
 		Product_model p = (Product_model) obj;
 		try {
 			Connection conn = ConnectionClass.getConnection();
@@ -99,22 +74,27 @@ public class Product_DAO {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, loaiSP);
 			ResultSet rs = ps.executeQuery();
-			int category_id = rs.getInt("id");
-			
-			String query1 = "SELECT * FROM category WHERE brand_name=?";
+			int category_id = -1;
+			if (rs.next()) { // Move cursor to first row
+			    category_id = rs.getInt("id");
+			}
+
+			String query1 = "SELECT * FROM brands WHERE brand_name=?";
 			PreparedStatement ps1 = conn.prepareStatement(query1);
-			ps.setString(1, brand);
+			ps1.setString(1, brand);
 			ResultSet rs1 = ps1.executeQuery();
-			int brand_id = rs1.getInt("id");
+			int brand_id = -1;
+			if (rs1.next()) { // Move cursor to first row
+			    brand_id = rs1.getInt("id");
+			}
 			
 			Statement stmt = conn.createStatement();
-			String hinh = p.getHinhsp();
-			if(hinh == "") {
-				String sql = "UPDATE sanpham SET MaSP='" + p.getMasp() + "', TenSP='" + p.getTensp() + "', MoTaSP='" + p.getMotasp() + "', GiaSP='" + p.getGiasp() + "', category_id='" + category_id + "', brand_id='" + brand_id + "' WHERE id=" + id;
+			if(hinhSPs.isEmpty()) {
+				String sql = "UPDATE sanpham SET MaSP='" + p.getMasp() + "', TenSP='" + p.getTensp() + "', MoTaSP='" + p.getMotasp() + "', GiaSP='" + p.getGiasp() + "', category_id='" + category_id + "', brand_id='" + brand_id + "' WHERE id= '" + id + "'";
 				stmt.executeUpdate(sql);
 			}
 			else {
-				String sql = "UPDATE sanpham SET MaSP='" + p.getMasp() + "', TenSP='" + p.getTensp() + "', HinhSP='" + p.getHinhsp() + "', MoTaSP='" + p.getMotasp() + "', GiaSP='" + p.getGiasp() + "', category_id='" + category_id + "', brand_id='" + brand_id + "' WHERE id=" + id;
+				String sql = "UPDATE sanpham SET MaSP='" + p.getMasp() + "', TenSP='" + p.getTensp() + "', HinhSP='" + hinhSPs.get(0) + "', MoTaSP='" + p.getMotasp() + "', GiaSP='" + p.getGiasp() + "', more_img='" + hinhSPs.get(1) + "', more_img1='" + hinhSPs.get(2) + "', more_img2='" + hinhSPs.get(3) + "', category_id='" + category_id + "', brand_id='" + brand_id + "' WHERE id= '" + id + "'";
 				stmt.executeUpdate(sql);
 			}
 			stmt.close();
@@ -203,6 +183,33 @@ public class Product_DAO {
 			return null;
 		}
 	}
+	
+	public Product_model getByid(String id) {
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			Statement stmt = conn.createStatement();
+			String sql = "SELECT * FROM sanpham WHERE id = '" + id + "'";
+			ResultSet rs = stmt.executeQuery(sql);
+			Product_model p = new Product_model();
+			if(rs.next()) {
+				p.setMasp(rs.getString("MaSP"));
+				p.setTensp(rs.getString("TenSP"));
+				p.setMotasp(rs.getString("MoTaSP"));
+				p.setGiasp(rs.getDouble("GiaSP"));
+				p.setHinhsp(rs.getString("HinhSP"));
+				p.setImg1(rs.getString("more_img"));
+				p.setIgm2(rs.getString("more_img1"));
+				p.setImg3(rs.getString("more_img2"));
+			}
+			stmt.close();
+			conn.close();
+			return p;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	
 	public List<Product_model> getAllProduct() {
@@ -213,7 +220,7 @@ public class Product_DAO {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				plist.add(new Product_model(rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getInt("GiaSP"), rs.getInt("category_id"), rs.getInt("brand_id")));
+				plist.add(new Product_model(rs.getInt("id"), rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getInt("GiaSP"), rs.getInt("category_id"), rs.getInt("brand_id")));
 			}
 			stmt.close();
 			conn.close();
