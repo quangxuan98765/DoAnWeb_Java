@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product.css">
     <link rel="stylesheet" href="css/searchIndex.css">
 </head>
 <body>
@@ -65,6 +65,19 @@
     })
 </script>
 
+<style>
+  .anhsp {
+    display: flex; /* Sử dụng flexbox để ngang hàng */
+    justify-content: space-between; /* Canh chỉnh khoảng cách giữa các hình ảnh */
+    align-items: center; /* Canh chỉnh các hình ảnh theo trục dọc */
+  }
+
+  .small-image {
+    width: 200px;
+    height: 133px;
+  }
+</style>
+
     <section class="product-details">
         <div class="image-slider">
 			  <c:set var="row" value="${sp}" />
@@ -97,7 +110,7 @@
                 // Hiển thị thông báo và lựa chọn xác nhận hoặc hủy
                 if (confirm('Bạn cần đăng nhập để mua hàng. Nhấn OK để chuyển đến trang đăng nhập.')) {
                     // Chuyển hướng đến trang đăng nhập
-                    window.location.href = 'login.jsp';
+                    window.location.href = 'XulyDangNhap';
                 }
             }
 
@@ -121,8 +134,8 @@
         </script>
         <!-- ----------------script------------------------------- -->
         </div>
-        <form method="post" action="Cart">
         <div class="details">
+        <form method="post" action="Cart">
 		<c:set var="row" value="${sp}"/>
 			<h2 class="product-brand">${row.tensp}</h2>
 			<p class="product-short-des">${row.motasp}</p>
@@ -160,8 +173,8 @@
 			<button class="btn cart-btn" onclick="check_addToCart()">thêm vào giỏ hàng</button>
 		</c:if>
 		<span id="cart-status"></span>
+		</form>
         </div>
-        </form>
     </section>
 
     <section class="detail-des">
