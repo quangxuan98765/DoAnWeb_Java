@@ -11,7 +11,7 @@ public class User_DAO{
 		User_model kh = (User_model) obj;
 		try {
 			Connection conn = ConnectionClass.getConnection();
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password, email, fullname, role) VALUES (?, ?, ?, ?, 'normal')");
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password, email, fullname, role, disabled) VALUES (?, ?, ?, ?, 'normal', '0')");
 			ps.setString(1, kh.getUsername());
 			ps.setString(2, kh.getPassword());
 			ps.setString(3, kh.getEmail());
@@ -74,5 +74,6 @@ public class User_DAO{
 			return null;
 		}
 	}
+	
 
 }

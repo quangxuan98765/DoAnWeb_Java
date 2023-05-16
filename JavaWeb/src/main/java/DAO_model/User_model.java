@@ -5,11 +5,11 @@ public class User_model {
 	
 	public User_model() {}
 	
-	public User_model(String username, String email, String fullname, String role) {
+	public User_model(String username, String passsword, String email, String fullname) {
 		this.username = username;
 		this.email = email;
+		this.password = passsword;
 		this.fullname = fullname;
-		this.role = role;
 	}
 	
 	public User_model(String username, String password, String email, String fullname, String role) {

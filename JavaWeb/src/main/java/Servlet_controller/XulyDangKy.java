@@ -32,16 +32,17 @@ public class XulyDangKy extends HttpServlet {
 		String mail= request.getParameter("email");
 		String tk= request.getParameter("username");
 		String mk= request.getParameter("password");
-
+		System.out.println(mk + " " + tk + " " + mail + " " + hoten + " ");
 		User_model kh = new User_model(tk, mk, mail, hoten);
 		boolean success = new User_DAO().themTaiKhoan(kh);
+		System.out.println(success);
 		if (success) {
             // Nếu thêm tài khoản thành công thì chuyển hướng về trang đăng nhập
             response.sendRedirect("XulyDangNhap");
         } else {
             // Nếu thêm tài khoản thất bại thì hiển thị thông báo lỗi
-            //request.setAttribute("errorMsg", "Đăng ký tài khoản thất bại. Vui lòng thử lại!");
-            request.getRequestDispatcher("XulyDangKy").forward(request, response);
+            request.setAttribute("errorMsg", "Đăng ký tài khoản thất bại. Vui lòng thử lại!");
+            //request.getRequestDispatcher("XulyDangKy").forward(request, response);
         }
 	}
 
