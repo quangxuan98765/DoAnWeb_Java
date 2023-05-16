@@ -47,18 +47,25 @@ public class addProduct extends HttpServlet {
 		String brands = request.getParameter("thuong_hieu");
 		
 		 // Lấy danh sách các Part chứa các file ảnh sản phẩm Các Part này có thể được lấy bằng cách sử dụng thuộc tính name của thẻ <input type="file">.
-		List<Part> hinhSPs = new ArrayList<Part>();
+		List<String> hinhSPs = new ArrayList<>();
 		Collection<Part> parts = request.getParts();
-	    for (Part part : parts) {
-	        String fileName = part.getSubmittedFileName();
-	        if (fileName != null && !fileName.isEmpty()) {
-	            // Kiểm tra xem đây có phải là một file ảnh hay không
-	            String contentType = part.getContentType();
-	            if (contentType != null && contentType.startsWith("image/")) {
-	                hinhSPs.add(part);
-	            }
-	        }
-	    }
+//	    for (Part part : parts) {
+//	        String fileName = part.getSubmittedFileName();
+//	        if (fileName != null && !fileName.isEmpty()) {
+//	            // Kiểm tra xem đây có phải là một file ảnh hay không
+//	            String contentType = part.getContentType();
+//	            if (contentType != null && contentType.startsWith("image/")) {
+//	            	System.out.println(part);
+//	                hinhSPs.add(part);
+//	            }
+//	        }
+//	    }
+		hinhSPs.add("img/product/" + request.getPart("fileParts1").getSubmittedFileName());
+		hinhSPs.add("img/product/" + request.getPart("fileParts2").getSubmittedFileName());
+		hinhSPs.add("img/product/" + request.getPart("fileParts3").getSubmittedFileName());
+		hinhSPs.add("img/product/" + request.getPart("fileParts4").getSubmittedFileName());
+		System.out.println(hinhSPs);
+		
 		
 		Product_model p = new Product_model(maSP, tenSP, motaSP, giaSP, brands, loaiSP);
 		new Product_DAO().insert(p, hinhSPs);

@@ -30,13 +30,13 @@
         <div class="upload-image-sec">
             <p class="text"><img src="img/camera.png" alt="">tải ảnh lên</p>
             <div class="upload-catalouge">
-                <input type="file" class="fileupload" id="image-upload1" name="fileParts[]" accept="image/*" style="width: 90px;">
+                <input type="file" class="fileupload" id="image-upload1" name="fileParts1" accept="image/*" style="width: 90px;">
                 <img id="image-preview1" style="display: block;width: 100px;">
-                <input type="file" class="fileupload" id="image-upload2" name="fileParts[]" accept="image/*" style="width: 90px;">
+                <input type="file" class="fileupload" id="image-upload2" name="fileParts2" accept="image/*" style="width: 90px;">
                 <img id="image-preview2" style="display: block;width: 100px;">
-                <input type="file" class="fileupload" id="image-upload3" name="fileParts[]" accept="image/*" style="width: 90px;">
+                <input type="file" class="fileupload" id="image-upload3" name="fileParts3" accept="image/*" style="width: 90px;">
                 <img id="image-preview3" style="display: block;width: 100px;">
-                <input type="file" class="fileupload" id="image-upload4" name="fileParts[]" accept="image/*" style="width: 90px;">
+                <input type="file" class="fileupload" id="image-upload4" name="fileParts4" accept="image/*" style="width: 90px;">
                 <img id="image-preview4" style="display: block;width: 100px;">
             </div>
         </div>

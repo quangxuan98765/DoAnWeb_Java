@@ -15,7 +15,7 @@ import java.util.List;
 import javax.servlet.http.Part;
 
 public class Product_DAO {
-	public boolean insert(Object obj, List<Part> fileParts) {
+	public boolean insert(Object obj, List<String> hinhSPs) {
 		Product_model p = (Product_model) obj;
 		try {
 			Connection conn = ConnectionClass.getConnection();
@@ -41,34 +41,50 @@ public class Product_DAO {
 			}
 
 			// Upload hình sản phẩm và lưu đường dẫn vào danh sách hình SP
-			List<String> hinhSPs = new ArrayList<>();
-			boolean uploadSuccess = uploadHinh(hinhSPs, fileParts);
+//			List<String> hinhSPs = new ArrayList<>();
+//			boolean uploadSuccess = uploadHinh(hinhSPs, fileParts);
 
-			if (uploadSuccess) {
-				// Thêm sản phẩm vào database
-				String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, p.getMasp());
-				pstmt.setString(2, p.getTensp());
-				pstmt.setString(3, hinhSPs.get(0)); // Lấy đường dẫn ảnh đầu tiên
-				pstmt.setString(4, p.getMotasp());
-				pstmt.setDouble(5, p.getGiasp());
-				pstmt.setString(6, hinhSPs.get(1));
-				pstmt.setString(7, hinhSPs.get(2));
-				pstmt.setString(8, hinhSPs.get(3));
-				pstmt.setInt(9, category_id);
-				pstmt.setInt(10, brand_id);
-				pstmt.executeUpdate();
-				pstmt.close();
-				conn.close();
-				return true;
-			} else {
-				return false;
-			}
+			String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, p.getMasp());
+			pstmt.setString(2, p.getTensp());
+			pstmt.setString(3, hinhSPs.get(0)); // Lấy đường dẫn ảnh đầu tiên
+			pstmt.setString(4, p.getMotasp());
+			pstmt.setDouble(5, p.getGiasp());
+			pstmt.setString(6, hinhSPs.get(1));
+			pstmt.setString(7, hinhSPs.get(2));
+			pstmt.setString(8, hinhSPs.get(3));
+			pstmt.setInt(9, category_id);
+			pstmt.setInt(10, brand_id);
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+//			if (uploadSuccess) {
+//				// Thêm sản phẩm vào database
+//				String sql = "INSERT INTO sanpham (MaSP ,TenSP, HinhSP, MoTaSP, GiaSP, more_img, more_img1, more_img2, category_id, brand_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//				PreparedStatement pstmt = conn.prepareStatement(sql);
+//				pstmt.setString(1, p.getMasp());
+//				pstmt.setString(2, p.getTensp());
+//				pstmt.setString(3, hinhSPs.get(0)); // Lấy đường dẫn ảnh đầu tiên
+//				pstmt.setString(4, p.getMotasp());
+//				pstmt.setDouble(5, p.getGiasp());
+//				pstmt.setString(6, hinhSPs.get(1));
+//				pstmt.setString(7, hinhSPs.get(2));
+//				pstmt.setString(8, hinhSPs.get(3));
+//				pstmt.setInt(9, category_id);
+//				pstmt.setInt(10, brand_id);
+//				pstmt.executeUpdate();
+//				pstmt.close();
+//				conn.close();
+//				return true;
+//			} else {
+//				return false;
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+		return true;
 	}
 
 	
