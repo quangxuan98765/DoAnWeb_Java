@@ -46,8 +46,10 @@
     </c:if>
     </div>
 </a>
- <a href="historycart.html"><img src="img/history.png"></a> <a
-				href="cart.html"><img src="img/cart.png"></a>
+<c:if test="${not empty sessionScope.username}">
+ <a href="historycart.html"><img src="img/history.png"></a> 
+ <a href="Cart"><img src="img/cart.png"></a>
+</c:if>
 		</div>
 	</div>
 	<ul class="links-container">
@@ -127,7 +129,7 @@
                 };
 
                 // Thiết lập yêu cầu POST với địa chỉ URL của trang xử lý yêu cầu và dữ liệu cần gửi đi
-                xhr.open("POST", "addToCart.php", true);
+                xhr.open("POST", "addToCart", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send("id=" + productId);
             }
@@ -135,7 +137,6 @@
         <!-- ----------------script------------------------------- -->
         </div>
         <div class="details">
-        <form method="post" action="Cart">
 		<c:set var="row" value="${sp}"/>
 			<h2 class="product-brand">${row.tensp}</h2>
 			<p class="product-short-des">${row.motasp}</p>
@@ -167,13 +168,12 @@
 				<a class="re-link js--open-modal2">Xem chi tiết thông số kỹ thuật</a>
 		</div>
 		<c:if test="${not empty sessionScope.username}">
-			<button class="btn cart-btn" onclick="addToCart(${row.masp})">thêm vào giỏ hàng</button>
+			<button class="btn cart-btn" onclick="addToCart(${row.id})">thêm vào giỏ hàng</button>
 		</c:if>
 		<c:if test="${empty sessionScope.username}">
 			<button class="btn cart-btn" onclick="check_addToCart()">thêm vào giỏ hàng</button>
 		</c:if>
 		<span id="cart-status"></span>
-		</form>
         </div>
     </section>
 

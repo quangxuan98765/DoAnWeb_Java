@@ -1,8 +1,9 @@
 package DAO_model;
 
 public class User_model {
-	private String username ,password,email,fullname,role;
-	
+	private String username ,password, email, fullname, role, city, tenduong, sonha;
+	private int idc;
+
 	public User_model() {}
 	
 	public User_model(String username, String passsword, String email, String fullname) {
@@ -12,6 +13,13 @@ public class User_model {
 		this.fullname = fullname;
 	}
 	
+	public User_model(String city, String tenduong, String sonha) {
+		super();
+		this.city = city;
+		this.tenduong = tenduong;
+		this.sonha = sonha;
+	}
+
 	public User_model(String username, String password, String email, String fullname, String role) {
 		this.username = username;
 		this.password = password;
@@ -58,6 +66,38 @@ public class User_model {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getTenduong() {
+		return tenduong;
+	}
+
+	public void setTenduong(String tenduong) {
+		this.tenduong = tenduong;
+	}
+
+	public String getSonha() {
+		return sonha;
+	}
+
+	public void setSonha(String sonha) {
+		this.sonha = sonha;
+	}
+
+	public int getIdc() {
+		return idc;
+	}
+
+	public void setIdc(int idc) {
+		this.idc = idc;
 	}
 
 	@Override

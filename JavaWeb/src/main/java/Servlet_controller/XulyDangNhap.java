@@ -27,7 +27,7 @@ public class XulyDangNhap extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		
-		response.setContentType("text/html;charset=UTF-8"); // thiết lập kiểu dữ liệu trả về cho phần mềm duyệt web là HTML. Điều này đảm bảo rằng phần mềm duyệt web sẽ hiểu được dữ liệu trả về từ Servlet là HTML và hiển thị nó đúng cách.
+		//response.setContentType("text/html;charset=UTF-8"); // thiết lập kiểu dữ liệu trả về cho phần mềm duyệt web là HTML. Điều này đảm bảo rằng phần mềm duyệt web sẽ hiểu được dữ liệu trả về từ Servlet là HTML và hiển thị nó đúng cách.
         //PrintWriter out = response.getWriter();// để ghi các thẻ HTML và các nội dung khác vào phần thân của trang web
 
         String username = request.getParameter("username");

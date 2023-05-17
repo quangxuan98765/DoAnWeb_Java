@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -51,7 +52,7 @@
 		</div>
 	</div>
 	<ul class="links-container">
-		<li class="link-item"><a href="index.php" class="link"><img src="img/home.png">Trang chủ</li>
+		<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
 	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
 	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
 	    <li class="link-item"><a class="link"></li>
@@ -64,88 +65,165 @@
         userPop.classList.toggle('hide');
     })
 </script>
-    <a class="back" onclick="location.href='index.php'">&larr; Mua thêm sản phẩm khác</a> 
-    <div class="small-container cart-page">
-        
-    <div class="line"></div>
+
+<!--         ajax           -->
+<script>
+    function deleteCart(masp) {
+        // Tạo đối tượng XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "deleteCart?masp=" + masp, true);
+        xhr.onload = function() {
+            var sum = 0;
+            var billcontainer = document.getElementById('myTD');
+            var billcontainer1 = document.getElementById('myTD1');
+            var count = document.getElementById('count');
+            var products = JSON.parse(xhr.responseText);
+            var numOfItems = products.length;
+            var productContainer = document.getElementById('boxajax-containter');
+            var productHtml = "";
+            if(products.length === 0) {
+                productHtml = `<a class="back" onclick="location.href='Index'">&larr; Mua thêm sản phẩm khác</a>`;
+                productContainer.innerHTML = productHtml + `<div class="container" style="text-align:center;"><img src="img/no-products.png" alt=""><p class="overlay" id="formtt">Giỏ hàng của bạn đang trống</p></div>`;
+                const myForm = document.getElementById("my-form");
+                myForm.style.display = "none";
+            }
+            else{
+                products.forEach(function(product){
+                    productHtml += `<tr><td><div class="cart-info"><img src="` + product.hinhsp + `"><div>`;
+                    productHtml += `<h3>` + product.TenSP + `(` + product.MaSP + `)</h3>`;
+                    productHtml += `<small>`+ product.MoTaSP +`</small><br>`;
+                    productHtml += `<a class="link-text" href="Product?masp=` + product.masp + `">Xem chi tiết</a><br>`;
+                    var gia = parseInt(product.giasp) * parseInt(product.soluong);
+                    productHtml += `<button class="btn-remove" onclick="deleteCart('${product.masp}')">Xoá sản phẩm</button></div></div><td><button class="btn-value">-</button><input type="number" value="${product.soluong}"><button class="btn-value">+</button></td><td>`+ gia +`$</td></tr>`;
+                    sum += gia;
+                });
+                productContainer.innerHTML = productHtml;
+            }
+            billcontainer.innerHTML = sum;
+            billcontainer1.innerHTML = sum;
+            count.innerHTML = `Tạm tính(` + numOfItems + ` sản phẩm)`;
+        }
+        xhr.onerror = function() {
+            console.error(xhr.statusText);
+        };
+        xhr.send();
+    }
+</script>
+
+<div id="boxajax-containter">
+    <a class="back" onclick="location.href='index.php'">&larr; Mua thêm sản phẩm khác</a>
+
+    <c:choose>
+        <c:when test="${fn:length(cartList) > 0}">
+            <div class="small-container cart-page">
+                <table>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th style="width: 130px">giá</th>
+                    </tr>
+                    <c:forEach var="product" items="${cartList}">
+                        <tr>
+                            <td>
+                                <div class="cart-info">
+                                    <img src="${product.hinhsp}">
+                                    <div>
+                                        <h3>${product.tensp} (${product.masp})</h3>
+                                        <small>${product.motasp}</small><br>
+                                        <a class="link-text" href="Product?MaSP=${product.masp}">Xem chi tiết</a><br>
+                                        <button class="btn-remove" onclick="deleteCart('${product.masp}')">Xoá sản phẩm</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn-value">-</button>
+                                <input type="number" value="${product.soluong}">
+                                <button class="btn-value">+</button>
+                            </td>
+                            <td>${product.giasp}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="container" style="text-align:center;">
+                <img src="img/no-products.png" alt="">
+                <p class="overlay" id="formtt">Giỏ hàng của bạn đang trống</p>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>
+
+    <form name="form" method="get" id="my-form" action="thanhtoan.php" enctype="multipart/form-data">
     <div class="input-cart">
-        <p class="text header">thÃ´ng tin khÃ¡ch hÃ ng</p>
-        <input type="checkbox" id="Nam">
+        <p class="text header">thông tin khách hàng</p>
+        <input type="checkbox" id="Nam" name="xungho" onclick="checkOnlyOne1(this)">
         <label for="Nam" class="check-title">Anh</label>
-        <input type="checkbox" id="Nu">
-        <label for="Nu" class="check-title">Chá»</label>
+        <input type="checkbox" id="Nu" name="xungho" onclick="checkOnlyOne1(this)">
+        <label for="Nu" class="check-title">Chị</label>
         <div class="zone-text-input">
-            <input type="text" class="input-text" placeholder="Há» vÃ  tÃªn">
-            <input type="text" class="input-text" placeholder="Sá» Äiá»n thoáº¡i">
+        	<input id="hoten"  type="text" class="input-text" placeholder="Họ và tên">
+            <input id="sdt" name="sdt" type="text" class="input-text" placeholder="Số điện thoại">
         </div>
-        <p class="text header">chá»n cÃ¡ch thá»©c nháº­n hÃ ng</p>
-        <input type="checkbox" id="ship">
-        <label for="ship" class="check-title">Giao hÃ ng táº­n nÆ¡i</label>
-        <input type="checkbox" id="shop">
-        <label for="shop" class="check-title">Nháº­n táº¡i cá»­a hÃ ng</label>
+        <p class="text header">chọn địa chỉ nhận hàng</p>
+
+        <a href="addDiaChi" class="linked" >Thêm địa chỉ mới</a>
         <div class="address-input">
-            <select class="select">
-                <option>Há» ChÃ­ Minh</option>
-                <option>HÃ  Ná»i</option>
-                <option>Máº·t TrÄng</option>
-                <option>Sao Hoáº£</option>
-            </select>
-            <select class="select">
-                <option>Chá»n Quáº­n/Huyá»n</option>
-                <option>HÃ  Ná»i</option>
-                <option>Máº·t TrÄng</option>
-                <option>Sao Hoáº£</option>
-            </select>
-            <select class="select">
-                <option>PhÆ°á»ng /xÃ£</option>
-                <option>HÃ  Ná»i</option>
-                <option>Máº·t TrÄng</option>
-                <option>Sao Hoáº£</option>
-            </select>
-            <input type="text" class="input-text input-text2" placeholder="Sá» nhÃ , tÃªn ÄÆ°á»ng">
+        <select id="mySelect" name="select-loc" class="select">
+		    <option value="-1">Chọn địa chỉ nhận hàng</option>
+		    <c:forEach var="row1" items="${diachi}">
+		        <option value="${row1.idc}">${row1.city} ${row1.tenduong} ${row1.sonha}</option>
+		    </c:forEach>
+		</select>
+        <a id="myLink" href="#">Chỉnh sửa địa chỉ</a>
         </div>
-        <input type="text" class="input-text input-text3" placeholder="YÃªu cáº§u khÃ¡c (khÃ´ng báº¯t buá»c)">
-        <div class="check-one-line">
-            <input type="checkbox" id="none">
-            <label for="none" class="check-title">Gá»i ngÆ°á»i khÃ¡c nháº­n hÃ ng (náº¿u cÃ³)</label>
+        <input type="text" class="input-text input-text3" placeholder="Yêu cầu khác (không bắt buộc)">
+        <p class="text header">chọn phương thức thanh toán</p>
+        <input type="checkbox" id="cod" name="pay" value="COD" onclick="checkOnlyOne2(this)">
+        <label for="cod" class="check-title">COD</label>
+
+        <input type="checkbox" id="onl" name="pay" value="Online" onclick="checkOnlyOne2(this)">
+        <label for="onl" class="check-title">Online</label>
+        <div class="zone-text-input">
+            <input type="text" class="input-text" id="bank" placeholder="số tài khoản" style="display:none;">
         </div>
-        <div class="check-one-line">
-            <input type="checkbox" id="none">
-            <label for="none" class="check-title">HÆ°á»ng dáº«n sá»­ dá»¥ng, giáº£i ÄÃ¡p tháº¯c máº¯c</label>
-        </div>
-        <div class="check-one-line">
-            <input type="checkbox" id="none">
-            <label for="none" class="check-title">xuáº¥t hoÃ¡ ÄÆ¡n cÃ´ng ty</label>
-        </div>
-        <div class="check-one-line">
-            <a class="check-title">*Báº¡n cÃ³ thá» chá»n hÃ¬nh thá»©c thanh toÃ¡n sau khi Äáº·t hÃ ng</a>
-        </div>
+
     </div>
-    <div class="total-price">
+    <div class="total-price" id="billajax">
         <table>
             <tr>
-                <td>Táº¡m tÃ­nh (3 sáº£n pháº©m)</td>
-                <td>790.000â«</td>
-            </tr>
-            <tr>
-                <td><select class=" select select3">
-                    <option>Sá»­ dá»¥ng mÃ£ giáº£m giÃ¡</option>
-                    <option>CÃ³ cÃ¡i ná»t</option>
-                    <option>Máº·t TrÄng</option>
-                    <option>Sao Hoáº£</option>
-                </select></td>
-                <td>-0â«</td>
-            </tr>
-            <tr>
-                <td>Tá»ng thanh toÃ¡n</td>
-                <td>869.000â«</td>
-            </tr>
+                <c:set var="sum" value="${0}" /> <!-- Khởi tạo biến sum -->
+
+				<c:forEach var="item" items="${cartList}">
+				  <c:set var="subtotal" value="${item.giasp * item.soluong}" /> <!-- Tính tổng giá cho từng sản phẩm -->
+				  <c:set var="sum" value="${sum + subtotal}" /> <!-- Tính tổng giá cho toàn bộ giỏ hàng -->
+				</c:forEach>
+				
+				<tr>
+				  <td id="count">Tạm tính(${fn:length(cartList)} sản phẩm)</td> <!-- Hiển thị số lượng sản phẩm -->
+				  <td id="myTD">${sum}</td>
+				</tr>
+				<tr>
+				  <td>
+				    <select class="select select3">
+				      <option>Sử dụng mã giảm giá</option>
+				      <option>Có cái nịt</option>
+				    </select>
+				  </td>
+				  <td>-0₫</td>
+				</tr>
+				<tr>
+				  <td>Tổng thanh toán</td>
+				  <td id="myTD">${sum}</td>
+				</tr>
             <tr>
                 <td></td>
-                <td><button class="btn-cart">Äáº·t hÃ ng</td>
+                <td><button name="dathang" class="btn-cart" onclick="return validateForm()">Đặt hàng</button></td>
             </tr>
         </table>
     </div>
-    <script src="js/nav.js"></script>
+    </form>
+    <script src="js/cart.js"></script>
 </body>
 </html>

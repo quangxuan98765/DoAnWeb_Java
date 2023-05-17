@@ -1,8 +1,6 @@
 package Servlet_controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,21 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import DAO_model.Cart_DAO;
-import DAO_model.User_DAO;
-import DAO_model.Product_model;
-import DAO_model.User_model;
 
 /**
- * Servlet implementation class Cart
+ * Servlet implementation class addToCart
  */
-@WebServlet("/Cart")
-public class Cart extends HttpServlet {
+@WebServlet("/addToCart")
+public class addToCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Cart() {
+    public addToCart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,27 +29,25 @@ public class Cart extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-	    response.setCharacterEncoding("utf-8");
-		
-		HttpSession session = request.getSession();
-	    String username = (String) session.getAttribute("username");
-	    
-		Cart_DAO pdao = new Cart_DAO();
-		User_DAO pu = new User_DAO();
-		List<Product_model> plist = pdao.getAllProduct(username);
-		List<User_model> listDC = pu.getDC(username);
-		request.setAttribute("cartList", plist);
-		request.setAttribute("diachi", listDC);
-		this.getServletContext().getRequestDispatcher("/cart.jsp").forward(request, response);
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	    request.setCharacterEncoding("utf-8");
+	    response.setCharacterEncoding("utf-8");
+	    
+	    String id = request.getParameter("id"); // Lấy ID từ yêu cầu Ajax
+	    
+	    HttpSession session = request.getSession();
+	    String username = (String) session.getAttribute("username"); // Lấy username từ session
+	    
+	    Cart_DAO cartDao = new Cart_DAO();
+	    cartDao.addSP(id, username); // Truyền ID và username vào phương thức addSP() của Cart_DAO
+	    
 	}
 
 }

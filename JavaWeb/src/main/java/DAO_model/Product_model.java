@@ -3,7 +3,7 @@ package DAO_model;
 public class Product_model {
 	private String masp, tensp, hinhsp, motasp, img1, igm2, img3 ,brand_name, category_name;
 	private double giasp;
-	private int brands_id, cate_id, id;
+	private int brands_id, cate_id, id, soluong;
 	
 	public Product_model() {}
 	
@@ -21,6 +21,22 @@ public class Product_model {
 		this.giasp = giasp;
 		this.brands_id = brands_id;
 		this.cate_id = cate_id;
+	}
+	
+	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
+			double giasp, int brands_id, int cate_id, int sl) {
+		super();
+		this.masp = masp;
+		this.tensp = tensp;
+		this.hinhsp = hinhsp;
+		this.motasp = motasp;
+		this.img1 = img1;
+		this.igm2 = igm2;
+		this.img3 = img3;
+		this.giasp = giasp;
+		this.brands_id = brands_id;
+		this.cate_id = cate_id;
+		this.soluong = sl;
 	}
 	
 	public Product_model(String masp, String tensp, String hinhsp, String motasp, String img1, String igm2, String img3,
@@ -143,6 +159,14 @@ public class Product_model {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getSoluong() {
+		return soluong;
+	}
+
+	public void setSoluong(int soluong) {
+		this.soluong = soluong;
 	}
 
 }

@@ -47,8 +47,10 @@
     </c:if>
     </div>
 </a>
- <a href="historycart.html"><img src="img/history.png"></a> <a
-				href="cart.html"><img src="img/cart.png"></a>
+<c:if test="${not empty sessionScope.username}">
+ <a href="historycart.html"><img src="img/history.png"></a> 
+ <a href="Cart"><img src="img/cart.png"></a>
+</c:if>
 		</div>
 	</div>
 	<ul class="links-container">

@@ -76,7 +76,7 @@ public class User_DAO{
 	public List<User_model> getAll(){
 		try {
 			Connection conn = ConnectionClass.getConnection();
-			String sql = "SELECT * FROM USER ";
+			String sql = "SELECT * FROM users ";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery(sql);
 			List<User_model> list = new ArrayList<User_model>();
@@ -98,5 +98,53 @@ public class User_DAO{
 		}
 	}
 	
+	public boolean ThemDC(Object obj, String username) {
+		User_model kh = (User_model) obj;
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO diachi (taikhoan, city, tenduong, sonha) VALUES (?, ?, ?, ?)");
+			ps.setString(1, username);
+			ps.setString(2, kh.getCity());
+			ps.setString(3, kh.getTenduong());
+			ps.setString(4, kh.getSonha());
+			//ps.setString(5, "user");
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
+	
+	public List<User_model> getDC(String username) {
+	    try {
+	        Connection conn = ConnectionClass.getConnection();
+	        String sql = "SELECT * FROM diachi WHERE taikhoan = ?";
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        ps.setString(1, username);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        List<User_model> list = new ArrayList<User_model>();
+	        while (rs.next()) {
+	            User_model user = new User_model();
+	            user.setIdc(rs.getInt("id"));
+	            user.setCity(rs.getString("city"));
+	            user.setTenduong(rs.getString("tenduong"));
+	            user.setSonha(rs.getString("sonha"));
+	            list.add(user);
+	        }
+	        
+	        rs.close();
+	        ps.close();
+	        conn.close();
+	        return list;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+	
 }

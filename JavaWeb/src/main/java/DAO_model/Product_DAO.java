@@ -166,6 +166,7 @@ public class Product_DAO {
 			ResultSet rs = stmt.executeQuery(sql);
 			Product_model p = new Product_model();
 			if(rs.next()) {
+				p.setId(rs.getInt("id"));
 				p.setTensp(rs.getString("TenSP"));
 				p.setMotasp(rs.getString("MoTaSP"));
 				p.setGiasp(rs.getDouble("GiaSP"));
@@ -221,7 +222,7 @@ public class Product_DAO {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				plist.add(new Product_model(rs.getInt("id"), rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getInt("GiaSP"), rs.getInt("category_id"), rs.getInt("brand_id")));
+				plist.add(new Product_model(rs.getInt("id"), rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getDouble("GiaSP"), rs.getInt("brand_id"), rs.getInt("category_id")));
 			}
 			stmt.close();
 			conn.close();
