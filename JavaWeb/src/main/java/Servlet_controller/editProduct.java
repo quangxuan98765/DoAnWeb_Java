@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import DAO_model.Product_model;
  * Servlet implementation class editProduct
  */
 @WebServlet("/editProduct")
+@MultipartConfig
 public class editProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

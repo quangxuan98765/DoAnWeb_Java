@@ -52,10 +52,20 @@
 		</div>
 	</div>
 	<ul class="links-container">
-		<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
+	<c:choose>
+	  <c:when test="${sessionScope.role == 'admin'}">
+	  	<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
+	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
+	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
+	    <li class="link-item"><a href="addProduct" class="link">Thêm sản phẩm</a></li>
+	  </c:when>
+	  <c:otherwise>
+	    <li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
 	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
 	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
 	    <li class="link-item"><a class="link"></li>
+	  </c:otherwise>
+	</c:choose>
 	</ul>
 	
 	<script>
@@ -114,6 +124,9 @@
 					  <c:when test="${sessionScope.role == 'admin'}">
 					  <button class="card-btn">thêm vào giỏ hàng</button>
 					    <a href="editProduct?id=${p.id }"><button class="card-action-btn edit-btn">Sửa</button></a>
+					    <a href="DeleteProduct?id=${p.id}" onclick="return confirm('Are you sure?');">
+						  <button class="card-action-btn delete-popup-btn">Xóa</button>
+						</a>
 					  </c:when>
 					  <c:otherwise>
 					    <button class="card-btn">thêm vào giỏ hàng</button>

@@ -107,11 +107,11 @@ public class Product_DAO {
 		}
 	}
 	
-	public boolean delete(int id) {
+	public boolean delete(String id) {
 		try {
 			Connection conn = ConnectionClass.getConnection();
 			Statement stmt = conn.createStatement();
-			String sql = "DELETE FROM sanpham WHERE sanpham.id = " + id;
+			String sql = "DELETE FROM sanpham WHERE sanpham.id = '" + id + "'";
 			stmt.executeUpdate(sql);
 			stmt.close();
 			conn.close();
@@ -192,6 +192,7 @@ public class Product_DAO {
 			ResultSet rs = stmt.executeQuery(sql);
 			Product_model p = new Product_model();
 			if(rs.next()) {
+				p.setId(Integer.parseInt(id));
 				p.setMasp(rs.getString("MaSP"));
 				p.setTensp(rs.getString("TenSP"));
 				p.setMotasp(rs.getString("MoTaSP"));
