@@ -166,7 +166,7 @@ public class Cart_DAO {
 	            id_1st_in_dh.put(id, t);
 	        }
 
-	        String sql3 = "SELECT donhang.id_dh, sanpham.HinhSP, sanpham.MaSP, sanpham.TenSP, sanpham.MoTaSP, sl_sp_dh.soluong, sanpham.GiaSP, donhang.date, donhang.trangthai " +
+	        String sql3 = "SELECT id_dh, id_sp, HinhSP, MaSP, TenSP, MoTaSP, soluong, GiaSP, date,trangthai " +
 	                      "FROM donhang " +
 	                      "INNER JOIN sl_sp_dh ON donhang.id = sl_sp_dh.id_dh " +
 	                      "INNER JOIN sanpham ON sl_sp_dh.id_sp = sanpham.id " +

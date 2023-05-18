@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.*;
 public class User_DAO{
 	
 	public boolean themTaiKhoan(Object obj) {
@@ -145,6 +146,100 @@ public class User_DAO{
 	        return null;
 	    }
 	}
+	
+	public List<User_model> getUsersByRole(String role){
+		List<User_model> list = new ArrayList<User_model>();
+		try {
+		    Connection conn = ConnectionClass.getConnection();
+		    String sql;
+		    if (role == null || role.isEmpty()) {
+		        sql = "SELECT `fullname`, `username`, `role`, `disabled` FROM `users`";
+		    } else {
+		        sql = "SELECT `fullname`, `username`, `role`, `disabled` FROM `users` WHERE `role` = ?";
+		    }
+		    PreparedStatement ps = conn.prepareStatement(sql);
+
+		    if (role != null && !role.isEmpty()) {
+		        ps.setString(1, role);
+		    }
+
+		    ResultSet results = ps.executeQuery();
+		    while (results.next()) {
+		        User_model user = new User_model();
+		        user.setUsername(results.getString("username"));
+		        user.setFullname(results.getString("fullname"));
+		        user.setRole(results.getString("role"));
+		        user.setDisabled(results.getString("disabled"));
+		        list.add(user);
+		    }
+		    conn.close();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return list;
+	}
+	public boolean updateDisabled(String username, String disable_value) {
+		try {
+		Connection conn = ConnectionClass.getConnection();
+		PreparedStatement ps = conn.prepareStatement("UPDATE `users` SET `disabled` = ? WHERE `username` = ?");
+		ps.setString(1, disable_value);
+		ps.setString(2, username);
+		ps.executeUpdate();
+
+	    System.out.println("SQL: " + ps);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	public boolean updateSthWhereUNEquals(String username,HashMap<String,String> Map1) {
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			String sql ="UPDATE `users` SET %s = ? WHERE `username` = ?";
+			PreparedStatement[] p = new PreparedStatement[Map1.size()];; 
+			int i=0;
+
+			for (Map.Entry<String,String> entry : Map1.entrySet()) {
+				int j=0;
+			    String key = entry.getKey();
+			    String value = entry.getValue();
+				String fmtSql = String.format(sql, key);
+				
+				p[i] = conn.prepareStatement(fmtSql);
+				p[i].setString(1, value);
+				p[i].setString(2, username);
+				p[i++].executeUpdate();
+			}
+			conn.close();
+		}catch(Exception e) {
+				e.printStackTrace();
+				return false;
+		}
+		return true;	
+	}
+	public boolean deleteUserWithRelateData(String username) {
+		try {
+		Connection conn =ConnectionClass.getConnection();
+		PreparedStatement[] p = new PreparedStatement[4];
+		 p[0] = conn.prepareStatement("DELETE FROM `donhang` WHERE `tentaikhoan` = ?");
+		 p[1] = conn.prepareStatement("DELETE FROM `cart` WHERE `taikhoan` = ?");
+		 p[2] = conn.prepareStatement("DELETE FROM `diachi` WHERE `taikhoan` = ?");
+		 p[3] = conn.prepareStatement("DELETE FROM `users` WHERE `username` = ?");
+		for(PreparedStatement currStatement : p ) {
+			currStatement.setString(1,username);
+			currStatement.executeUpdate();
+
+		    System.out.println("SQL: " + p);
+		}
+		 conn.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		}
 
 	
 }

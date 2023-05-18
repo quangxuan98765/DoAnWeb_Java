@@ -18,25 +18,28 @@ function doFirst(){
   sortT = (getSort == "DESC"|| getSort == "ASC")?"sortDate": "sortStatus";
 var getLocation = document.querySelector(".select-location").value;
 var fdate = document.querySelector(".date-search");
-  let data = {
-      action:"sort",
-    ...(getLocation !== "" && {
-      location: getLocation,
-    }),
-    ...( (fdate.querySelector(".from-date").value!= "" || fdate.querySelector(".to-date").value!= "") && {
-      searchDate:"1",
-      fromDate:fdate.querySelector(".from-date").value,
-      toDate:fdate.querySelector(".to-date").value,
-    }),
-    ...(getSort !== "" && {
-      sortType:sortT,
-      sort: getSort,
-    }),
-  };
+ let data = {
+  action: "sort",
+};
+
+if (getLocation !== "") {
+  data.location = getLocation;
+}
+
+if (fdate.querySelector(".from-date").value !== "" || fdate.querySelector(".to-date").value !== "") {
+  data.searchDate = "1";
+  data.fromDate = fdate.querySelector(".from-date").value;
+  data.toDate = fdate.querySelector(".to-date").value;
+}
+
+if (getSort !== "") {
+  data.sortType = sortT;
+  data.sort = getSort;
+}
 console.log(data);
   document.querySelector(".date-search");
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "mOrder.php", true);
+    xhr.open("POST", "Order", true);
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.onload = function () {
     if (xhr.status == 200) {
@@ -84,8 +87,9 @@ console.log(data);
     document.querySelectorAll(".see-full").forEach(function(element){
       element.addEventListener("click",(e)=>{
         e.preventDefault();
-          const params = new URLSearchParams({ id: element.dataset.id});
-          const url = "orderdetail.php?" + params.toString();
+        const encodedId = btoa(element.dataset.id);
+		const params = new URLSearchParams({ id: encodedId });
+          const url = "OrderDetail.jsp?iddh=" + params.toString();
           window.location.href = url;
       })
     })
@@ -117,8 +121,10 @@ fdate.querySelector(".btn.btn-search-date").addEventListener("click",()=>{
 
 function queryRequest(data){
   var xhr1 = new XMLHttpRequest();
-  xhr1.open("POST", "./mOrder.php", true);
+ xhr1.open("POST", "Order", true);
   xhr1.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+ /*xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");*/
+
   xhr1.onload = function () {
     console.log(xhr1.responseText);
       if (this.status == 200) {
