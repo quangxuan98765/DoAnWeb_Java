@@ -155,7 +155,7 @@
     </c:choose>
 </div>
 
-    <form name="form" method="get" id="my-form" action="thanhtoan.php" enctype="multipart/form-data">
+    <form name="form" method="post" id="my-form" action="Cart">
     <div class="input-cart">
         <p class="text header">thông tin khách hàng</p>
         <input type="checkbox" id="Nam" name="xungho" onclick="checkOnlyOne1(this)">

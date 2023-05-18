@@ -53,8 +53,24 @@ public class Cart extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+	    response.setCharacterEncoding("utf-8");
+		
+		HttpSession session = request.getSession();
+	    String username = (String) session.getAttribute("username");
+	    String pay = request.getParameter("pay");
+	    String sdt = request.getParameter("sdt");
+	    String idloca = request.getParameter("select-loc");
+	    Cart_DAO pdao = new Cart_DAO();
+	    boolean tc = pdao.DatHang(username, pay, idloca, sdt);
+	    if (tc) {
+            // Nếu thêm tài khoản thành công thì chuyển hướng về trang đăng nhập
+            response.sendRedirect("Historycart");
+        } else {
+            // Nếu thêm tài khoản thất bại thì hiển thị thông báo lỗi
+            request.setAttribute("errorMsg", "Thất bại. Vui lòng thử lại!");
+            //request.getRequestDispatcher("XulyDangKy").forward(request, response);
+        }
 	}
 
 }
