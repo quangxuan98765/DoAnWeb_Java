@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/cart.css">
-    <link rel="stylesheet" href="css/searchIndex.css">
+    <link rel="stylesheet" href="css/SearchIndex.css">
 
 </head>
 <body>
@@ -47,13 +47,13 @@
     </c:if>
     </div>
 </a>
- <a href="historycart.html"><img src="img/history.png"></a> <a
-				href="cart.html"><img src="img/cart.png"></a>
+ <a href="Historycart"><img src="img/history.png"></a> <a
+				href="Cart"><img src="img/cart.png"></a>
 		</div>
 	</div>
 	<ul class="links-container">
 		<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
-	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
+	    <li class="link-item"><a href="LaptopProduct" class="link">Laptop</li>
 	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
 	    <li class="link-item"><a class="link"></li>
 	</ul>
@@ -81,27 +81,28 @@
             var numOfItems = products.length;
             var productContainer = document.getElementById('boxajax-containter');
             var productHtml = "";
-            if(products.length === 0) {
-                productHtml = `<a class="back" onclick="location.href='Index'">&larr; Mua thêm sản phẩm khác</a>`;
-                productContainer.innerHTML = productHtml + `<div class="container" style="text-align:center;"><img src="img/no-products.png" alt=""><p class="overlay" id="formtt">Giỏ hàng của bạn đang trống</p></div>`;
+            if (products.length === 0) {
+                productContainer.innerHTML = '<div class="container" style="text-align:center;"><img src="img/no-products.png" alt=""><p class="overlay" id="formtt">Giỏ hàng của bạn đang trống</p></div>';
                 const myForm = document.getElementById("my-form");
                 myForm.style.display = "none";
             }
-            else{
-                products.forEach(function(product){
-                    productHtml += `<tr><td><div class="cart-info"><img src="` + product.hinhsp + `"><div>`;
-                    productHtml += `<h3>` + product.TenSP + `(` + product.MaSP + `)</h3>`;
-                    productHtml += `<small>`+ product.MoTaSP +`</small><br>`;
-                    productHtml += `<a class="link-text" href="Product?masp=` + product.masp + `">Xem chi tiết</a><br>`;
+            else {
+            	productHtml += '<table><tr><th>Sản phẩm</th><th>Số lượng</th><th style="width: 130px">giá</th></tr>';
+                products.forEach(function(product) {
+                    productHtml += '<tr><td><div class="cart-info"><img src="' + product.hinhsp + '"><div>';
+                    productHtml += '<h3>' + product.tensp + '(' + product.masp + ')</h3>';
+                    productHtml += '<small>' + product.motasp + '</small><br>';
+                    productHtml += '<a class="link-text" href="Product?Masp=' + product.masp + '">Xem chi tiết</a><br>';
                     var gia = parseInt(product.giasp) * parseInt(product.soluong);
-                    productHtml += `<button class="btn-remove" onclick="deleteCart('${product.masp}')">Xoá sản phẩm</button></div></div><td><button class="btn-value">-</button><input type="number" value="${product.soluong}"><button class="btn-value">+</button></td><td>`+ gia +`$</td></tr>`;
+                    productHtml += '<button class="btn-remove" onclick="deleteCart(\'' + product.masp + '\')">Xoá sản phẩm</button></div></div><td><button class="btn-value">-</button><input type="number" value="' + product.soluong + '"><button class="btn-value">+</button></td><td>' + gia + '$</td></tr>';
                     sum += gia;
                 });
+                productHtml += '</table>';
                 productContainer.innerHTML = productHtml;
             }
             billcontainer.innerHTML = sum;
             billcontainer1.innerHTML = sum;
-            count.innerHTML = `Tạm tính(` + numOfItems + ` sản phẩm)`;
+            count.innerHTML = 'Tạm tính(' + numOfItems + ' sản phẩm)';
         }
         xhr.onerror = function() {
             console.error(xhr.statusText);
@@ -110,12 +111,12 @@
     }
 </script>
 
-<div id="boxajax-containter">
+
     <a class="back" onclick="location.href='index.php'">&larr; Mua thêm sản phẩm khác</a>
 
     <c:choose>
         <c:when test="${fn:length(cartList) > 0}">
-            <div class="small-container cart-page">
+            <div class="small-container cart-page" id="boxajax-containter">
                 <table>
                     <tr>
                         <th>Sản phẩm</th>
@@ -130,7 +131,7 @@
                                     <div>
                                         <h3>${product.tensp} (${product.masp})</h3>
                                         <small>${product.motasp}</small><br>
-                                        <a class="link-text" href="Product?MaSP=${product.masp}">Xem chi tiết</a><br>
+                                        <a class="link-text" href="Product?Masp=${product.masp}">Xem chi tiết</a><br>
                                         <button class="btn-remove" onclick="deleteCart('${product.masp}')">Xoá sản phẩm</button>
                                     </div>
                                 </div>
@@ -153,7 +154,6 @@
             </div>
         </c:otherwise>
     </c:choose>
-</div>
 
     <form name="form" method="post" id="my-form" action="Cart">
     <div class="input-cart">

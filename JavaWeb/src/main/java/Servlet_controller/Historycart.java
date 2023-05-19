@@ -1,5 +1,6 @@
 package Servlet_controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import com.google.gson.Gson;
 
+import DAO_model.Order_DAO;
 import DAO_model.Cart_DAO;
 
 /**
@@ -37,51 +40,33 @@ public class Historycart extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    request.setCharacterEncoding("utf-8");
 	    response.setCharacterEncoding("utf-8");
 	    
+	    StringBuilder sb = new StringBuilder();
+	    BufferedReader reader = request.getReader();
+	    String line;
+	    while ((line = reader.readLine()) != null) {
+	        sb.append(line);
+	    }
+	    reader.close();
+	    
+	    String jsonData = sb.toString();
+	     HashMap<String,String>  map = new Gson().fromJson(jsonData, HashMap.class);
+	     String action = map.get("action");
+	    if(action.equals("Delete")) 
+	    	new Order_DAO().delete(map.get("id_dh"));
+	    else {
 	    HttpSession session = request.getSession();
 	    String username = (String) session.getAttribute("username");
 	    Cart_DAO pdao = new Cart_DAO();
-	    
-	    // Thực hiện lấy dữ liệu và xử lý
 	    Map<String, Object> data = pdao.getHistoryCart(username);
-	    
-	    // Chuyển đổi dữ liệu thành chuỗi JSON
-	    String json = convertToJson(data);
-	    
-	    // Gửi chuỗi JSON về phía client
+	    String json = new Gson().toJson(data);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
-	    response.getWriter().write(json);
-	}
-
-	// Phương thức để chuyển đổi dữ liệu thành chuỗi JSON
-	private String convertToJson(Map<String, Object> data) {
-	    StringBuilder jsonBuilder = new StringBuilder();
-	    jsonBuilder.append("{");
-	    boolean first = true;
-	    for (Map.Entry<String, Object> entry : data.entrySet()) {
-	        if (!first) {
-	            jsonBuilder.append(",");
-	        } else {
-	            first = false;
-	        }
-	        String key = entry.getKey();
-	        Object value = entry.getValue();
-	        jsonBuilder.append("\"").append(key).append("\":");
-	        if (value instanceof String) {
-	            jsonBuilder.append("\"").append(value).append("\"");
-	        } else if (value instanceof Number || value instanceof Boolean) {
-	            jsonBuilder.append(value);
-	        } else {
-	            // Handle other complex types as needed
-	            jsonBuilder.append("null");
-	        }
-	    }
-	    jsonBuilder.append("}");
-	    return jsonBuilder.toString();
+	    response.getWriter().write(json);}
 	}
 
 

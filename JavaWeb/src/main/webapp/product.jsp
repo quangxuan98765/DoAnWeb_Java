@@ -11,8 +11,9 @@
 
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product.css">
-    <link rel="stylesheet" href="css/searchIndex.css">
+    <link rel="stylesheet" href="css/product.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/SearchIndex.css">
 </head>
 <body>
     <div class="nav">
@@ -47,16 +48,26 @@
     </div>
 </a>
 <c:if test="${not empty sessionScope.username}">
- <a href="historycart.html"><img src="img/history.png"></a> 
+ <a href="Historycart"><img src="img/history.png"></a> 
  <a href="Cart"><img src="img/cart.png"></a>
 </c:if>
 		</div>
 	</div>
 	<ul class="links-container">
-		<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</li>
-	    <li class="link-item"><a href="laptopProduct.php" class="link">Laptop</li>
-	    <li class="link-item"><a href="womenarmor.html" class="link">Phụ Kiện</li>
-	    <li class="link-item"><a class="link"></li>
+		<c:choose>
+	  <c:when test="${sessionScope.role == 'admin'}">
+	  	<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</a></li>
+	    <li class="link-item"><a href="LaptopProduct.jsp" class="link">Laptop</a></li>
+	    <li class="link-item"><a href="acceProduct.jsp" class="link">Phụ Kiện</a></li>
+	    <li class="link-item"><a href="addProduct" class="link">Thêm sản phẩm</a></li>
+	    <li class="link-item"><a href="Order" class="link">Quản lý Shop</a></li>
+	  </c:when>
+	  <c:otherwise>
+	    <li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</a></li>
+	    <li class="link-item"><a href="LaptopProduct.jsp" class="link">Laptop</a></li>
+	    <li class="link-item"><a href="acceProduct.jsp" class="link">Phụ Kiện</a></li>
+	  </c:otherwise>
+	</c:choose>
 	</ul>
 	
 	<script>
@@ -140,7 +151,7 @@
 		<c:set var="row" value="${sp}"/>
 			<h2 class="product-brand">${row.tensp}</h2>
 			<p class="product-short-des">${row.motasp}</p>
-			<span class="product-price">${row.giasp } vnđ</span><br>
+			<span class="product-price">${row.giasp } $</span><br>
 			<i>Thông số chi tiết</i>
 			<div class="st-param">
 				<ul>
@@ -187,104 +198,32 @@
         <button class="pre-btn"><img src="img/arrow.png" alt=""></button>
         <button class="nxt-btn"><img src="img/arrow.png" alt=""></button>
         <div class="product-container">
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 50%</span>
-                    <img src="img/card1.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">BloodAngels Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">230.000₫</span><span class="actual-price">460.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 50%</span>
-                    <img src="img/card2.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Black Dragons Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">230.000₫</span><span class="actual-price">460.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 30%</span>
-                    <img src="img/card3.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Blood Ravens Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">280.000₫</span><span class="actual-price">400.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 30%</span>
-                    <img src="img/card4.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Exorcists Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">266.000₫</span><span class="actual-price">380.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 25%</span>
-                    <img src="img/card5.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Fire Lords Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">337.500₫</span><span class="actual-price">450.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 25%</span>
-                    <img src="img/card6.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Iron Hands Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">270.000₫</span><span class="actual-price">360.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 15%</span>
-                    <img src="img/card7.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Knights of the Chalice Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">306.000₫</span><span class="actual-price">360.000₫</span>
-                </div>
-            </div>
-            <div class="product-card">
-                <div class="product-image">
-                    <span class="discount-tag">đang giảm 15%</span>
-                    <img src="img/card8.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
-                </div>
-                <div class="product-info">
-                    <h2 class="product-brand">Rift Stalkers Primaris</h2>
-                    <p class="product-short-des">Mark X Tacticus Power Armor</p>
-                    <span class="price">297.500₫</span><span class="actual-price">350.000₫</span>
-                </div>
-            </div>
-
-
+             <c:forEach items="${same}" var="p">
+		<div class="product-card">
+				<div class="product-image">
+				<a href="Product?Masp=${p.masp }">
+					<img src="${p.hinhsp }" class="product-thumb">
+					<c:choose>
+					  <c:when test="${sessionScope.role == 'admin'}">
+					  <button class="card-btn">thêm vào giỏ hàng</button>
+					    <a href="editProduct?id=${p.id }"><button class="card-action-btn edit-btn">Sửa</button></a>
+					    <a href="DeleteProduct?id=${p.id}" onclick="return confirm('Are you sure?');">
+						  <button class="card-action-btn delete-popup-btn">Xóa</button>
+						</a>
+					  </c:when>
+					  <c:otherwise>
+					    <button class="card-btn">thêm vào giỏ hàng</button>
+					  </c:otherwise>
+					</c:choose>
+				</a>
+				</div>
+				<div class="product-info">
+					<h2 class="product-brand">${p.tensp}</h2>
+					<p class="product-short-des">${p.motasp }</p>
+					<span class="price">${p.giasp}$</span>
+				</div>
+			</div>	
+		</c:forEach>
         </div>
         </section>
     <footer></footer>

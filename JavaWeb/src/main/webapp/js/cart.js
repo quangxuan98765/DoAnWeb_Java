@@ -4,7 +4,7 @@ var link = document.getElementById("myLink");
 select.addEventListener("change", function() {
     var selectedOption = this.options[this.selectedIndex];
     var selectedValue = selectedOption.value;
-    link.href = 'editlocationForm.php?id=' + selectedValue;
+    link.href = 'editLocation?idc=' + selectedValue;
 });
 
 function checkOnlyOne1(checkbox) {

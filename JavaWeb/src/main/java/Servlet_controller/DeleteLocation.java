@@ -1,8 +1,6 @@
 package Servlet_controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DAO_model.Product_DAO;
-import DAO_model.Product_model;
+import DAO_model.User_DAO;
 
 /**
- * Servlet implementation class Product
+ * Servlet implementation class DeleteLocation
  */
-@WebServlet("/Product")
-public class Product extends HttpServlet {
+@WebServlet("/DeleteLocation")
+public class DeleteLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Product() {
+    public DeleteLocation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +29,16 @@ public class Product extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Product_DAO p = new Product_DAO();
-		Product_model sp = p.get(request.getParameter("Masp"));
-		List<Product_model> sp1 = p.getSameBrand(sp.getBrands_id());
-		request.setAttribute("sp", sp);
-		request.setAttribute("same", sp1);
-		this.getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		new User_DAO().XoaDC(request.getParameter("idc"));
+		System.out.println("id" + request.getParameter("idc"));
+		response.sendRedirect("Cart");
 	}
 
 }

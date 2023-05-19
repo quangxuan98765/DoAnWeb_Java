@@ -9,20 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DAO_model.Product_DAO;
-import DAO_model.Product_model;
+import com.google.gson.Gson;
+
+import DAO_model.*;
 
 /**
- * Servlet implementation class Product
+ * Servlet implementation class addSortLocOrder
  */
-@WebServlet("/Product")
-public class Product extends HttpServlet {
+@WebServlet("/addSortLocOrder")
+public class addSortLocOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Product() {
+    public addSortLocOrder() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +32,20 @@ public class Product extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Product_DAO p = new Product_DAO();
-		Product_model sp = p.get(request.getParameter("Masp"));
-		List<Product_model> sp1 = p.getSameBrand(sp.getBrands_id());
-		request.setAttribute("sp", sp);
-		request.setAttribute("same", sp1);
-		this.getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/order.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    List<String> locationList = new Order_DAO().getDistinctLocationFromOrders();
+	
+	    Gson gson = new Gson();
+	    String jsonData = gson.toJson(locationList);
+	    response.getWriter().write(jsonData);
 	}
 
 }

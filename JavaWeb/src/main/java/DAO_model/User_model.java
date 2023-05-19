@@ -2,6 +2,7 @@ package DAO_model;
 
 public class User_model {
 	private String username ,password, email, fullname, role, city, tenduong, sonha;
+	private String disabled = "0";
 	private int idc;
 
 	public User_model() {}
@@ -98,6 +99,14 @@ public class User_model {
 
 	public void setIdc(int idc) {
 		this.idc = idc;
+	}
+	
+	public String getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(String disabled) {
+		this.disabled = disabled;
 	}
 
 	@Override

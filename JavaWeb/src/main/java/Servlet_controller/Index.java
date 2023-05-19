@@ -32,8 +32,10 @@ public class Index extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Product_DAO pdao = new Product_DAO();
-		List<Product_model> plist = pdao.getAllProduct();
-		request.setAttribute("plist", plist);
+		List<Product_model> Laplist = pdao.getAllLaptop();
+		List<Product_model> Alist = pdao.getAllAcce();
+		request.setAttribute("plist", Laplist);
+		request.setAttribute("Alist", Alist);
 		this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 	}
 

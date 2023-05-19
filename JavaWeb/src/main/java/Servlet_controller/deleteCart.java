@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import DAO_model.Cart_DAO;
 import DAO_model.Product_model;
@@ -63,7 +64,9 @@ public class deleteCart extends HttpServlet {
 		         e.printStackTrace();
 		     }
 		 }
-		 String json = remainingItemsArray.toString();
+//		 Gson gson = new Gson(); //sd Gson thì trả về 1 chuỗi {} (có thể sử dụng products = (number) kiễu int và product == null)
+//		 String json = gson.toJson(remainingItemsArray);
+		 String json = remainingItemsArray.toString(); //sài JSON này thì trả về là 1 mảng [] (có thể sử dụng products.length, products.length == 0)
 		 response.setContentType("application/json");
 		 response.setCharacterEncoding("UTF-8");
 		 response.getWriter().write(json);

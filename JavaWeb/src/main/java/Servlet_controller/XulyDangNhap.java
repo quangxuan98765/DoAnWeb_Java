@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.mindrot.jbcrypt.BCrypt;
 import DAO_model.User_DAO;
 
 @WebServlet("/XulyDangNhap")
@@ -24,31 +25,31 @@ public class XulyDangNhap extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		//response.setContentType("text/html;charset=UTF-8"); // thiết lập kiểu dữ liệu trả về cho phần mềm duyệt web là HTML. Điều này đảm bảo rằng phần mềm duyệt web sẽ hiểu được dữ liệu trả về từ Servlet là HTML và hiển thị nó đúng cách.
-        //PrintWriter out = response.getWriter();// để ghi các thẻ HTML và các nội dung khác vào phần thân của trang web
+	    request.setCharacterEncoding("utf-8");
+	    response.setCharacterEncoding("utf-8");
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        User_DAO t = new User_DAO();
-        if (t.checkLogin(username, password)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            
-            if (t.isAdmin(username)) {
-                session.setAttribute("role", "admin");
-            } else {
-                session.setAttribute("role", "normal");
-            }
-            response.sendRedirect("Index");
-        } else {
-            String erorr = "Sai tên đăng nhập hoặc mật khẩu";
-            request.setAttribute("error", erorr);
-            request.getRequestDispatcher("XulyDangNhap").include(request, response);
-        }
+	    String username = request.getParameter("username");
+	    String password = request.getParameter("password");
+
+	    User_DAO t = new User_DAO();
+	    String hashedPassword = t.getHashedPassword(username); // Retrieve the hashed password from the database based on the username
+
+	    if (hashedPassword != null && BCrypt.checkpw(password, hashedPassword)) {
+	        HttpSession session = request.getSession();
+	        session.setAttribute("username", username);
+
+	        if (t.isAdmin(username)) {
+	            session.setAttribute("role", "admin");
+	        } else {
+	            session.setAttribute("role", "normal");
+	        }
+	        response.sendRedirect("Index");
+	    } else {
+	        String error = "Sai tên đăng nhập hoặc mật khẩu";
+	        request.setAttribute("error", error);
+	        request.getRequestDispatcher("XulyDangNhap").include(request, response);
+	    }
 	}
+
 
 }

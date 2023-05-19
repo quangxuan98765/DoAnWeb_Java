@@ -15,7 +15,7 @@
     <img src="img/loader.gif" class="loader" alt="">
 
     <div class="alert-box">
-        <img src="img/error.png" class="alert-img" alt="">
+        <img class="alert-img" alt="">
         <p class="alert-msg">Error message</p>
     </div>
 	<form method="post" action="XulyDangKy">

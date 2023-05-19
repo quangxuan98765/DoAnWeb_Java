@@ -1,28 +1,30 @@
 package Servlet_controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import DAO_model.*;
+import java.util.HashMap;
+import java.util.List;
 
-import DAO_model.Product_DAO;
-import DAO_model.Product_model;
+import com.google.gson.*;
 
+import java.util.ArrayList;
+import java.util.Base64;
 /**
- * Servlet implementation class Product
+ * Servlet implementation class OrderDetail
  */
-@WebServlet("/Product")
-public class Product extends HttpServlet {
+@WebServlet("/OrderDetail")
+public class OrderDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Product() {
+    public OrderDetail() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +33,23 @@ public class Product extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Product_DAO p = new Product_DAO();
-		Product_model sp = p.get(request.getParameter("Masp"));
-		List<Product_model> sp1 = p.getSameBrand(sp.getBrands_id());
-		request.setAttribute("sp", sp);
-		request.setAttribute("same", sp1);
-		this.getServletContext().getRequestDispatcher("/product.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher("/OrderDetail.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String id_dh_encoded = request.getParameter("iddh");
+		byte[] decodedBytes = Base64.getDecoder().decode(id_dh_encoded);
+		String id_dh = new String(decodedBytes, "UTF-8");
+		List<HashMap<String ,String>> list = new ArrayList<HashMap<String,String>>();
+		list =  new Order_DAO().getOrderByID(id_dh);
+		String json = new Gson().toJson(list);
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+		System.out.println(json);
+		response.getWriter().write(json);
 	}
 
 }

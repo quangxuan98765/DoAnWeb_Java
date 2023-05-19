@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.Part;
 
@@ -174,6 +175,7 @@ public class Product_DAO {
 				p.setImg1(rs.getString("more_img"));
 				p.setIgm2(rs.getString("more_img1"));
 				p.setImg3(rs.getString("more_img2"));
+				p.setBrands_id(rs.getInt("brand_id"));
 			}
 			stmt.close();
 			conn.close();
@@ -214,11 +216,11 @@ public class Product_DAO {
 	}
 
 	
-	public List<Product_model> getAllProduct() {
+	public List<Product_model> getAllLaptop() {
 		try {
 			List<Product_model> plist = new ArrayList<>();
 			Connection conn = ConnectionClass.getConnection();
-			String sql = "SELECT * FROM sanpham";
+			String sql = "SELECT * FROM sanpham WHERE category_id = 1";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -232,6 +234,91 @@ public class Product_DAO {
 			System.out.println("ERROR: " + ex.getMessage());
 		}
 		return null;
+	}
+	
+	public List<Product_model> getAllAcce() {
+		try {
+			List<Product_model> plist = new ArrayList<>();
+			Connection conn = ConnectionClass.getConnection();
+			String sql = "SELECT * FROM sanpham WHERE category_id = 2";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				plist.add(new Product_model(rs.getInt("id"), rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getDouble("GiaSP"), rs.getInt("brand_id"), rs.getInt("category_id")));
+			}
+			stmt.close();
+			conn.close();
+			return plist;
+		} catch (Exception ex) {
+			// TODO: handle exception
+			System.out.println("ERROR: " + ex.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Product_model> getSameBrand(int id_hieu) {
+		try {
+			List<Product_model> plist = new ArrayList<>();
+			Connection conn = ConnectionClass.getConnection();
+			String sql = "SELECT * FROM sanpham WHERE brand_id = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, id_hieu);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				plist.add(new Product_model(rs.getInt("id"), rs.getString("MaSP"), rs.getString("TenSP"), rs.getString("HinhSP"), rs.getString("MoTaSP"), rs.getString("more_img"), rs.getString("more_img1"), rs.getString("more_img2"), rs.getDouble("GiaSP"), rs.getInt("brand_id"), rs.getInt("category_id")));
+			}
+			stmt.close();
+			conn.close();
+			return plist;
+		} catch (Exception ex) {
+			// TODO: handle exception
+			System.out.println("ERROR: " + ex.getMessage());
+		}
+		return null;
+	}
+	
+	public List<Product_model> getProductsByFilter(HashMap<String,String> filters){
+		List<Product_model> list = new ArrayList<>();
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			ArrayList<String> value = new ArrayList<String>();
+			String sql = "SELECT * FROM sanpham";
+			String setSort = " ";
+			if(filters.get("sort") != null) {
+				setSort += "ORDER BY GiaSP " + filters.get("sort");
+				filters.remove("sort");
+			}
+			if(filters.size() >= 1) {	
+				sql+=" WHERE";
+				if(filters.get("GiaSP") != null) {
+					sql+= " "+filters.get("GiaSP") + " AND";
+					filters.remove("GiaSP");
+				} if (filters.get("searchValue") != null) {
+					sql += " LOWER(TenSP) LIKE ? AND";
+					value.add("%" + filters.get("searchValue").toLowerCase() + "%");
+					filters.remove("searchValue");
+				}
+				 for (String key : filters.keySet()) {
+					
+					 sql +=" "+ key + "=? AND" ;
+					 value.add(filters.get(key));	 
+				 }
+				sql = sql.substring(0,sql.length()-4);
+			}
+			sql += setSort;
+			PreparedStatement ps = conn.prepareStatement(sql);
+			for (int i=0;i<value.size(); i++) 
+				ps.setString(i+1,value.get(i));
+		
+			ResultSet s = ps.executeQuery();
+			while (s.next()) 
+				list.add(new Product_model(s.getString("MaSP"), s.getString("TenSP"), s.getString("HinhSP"), s.getString("MoTaSP"), s.getString("more_img"), s.getString("more_img1"), s.getString("more_img2"), s.getInt("GiaSP"), s.getInt("category_id"), s.getInt("brand_id")));
+			ps.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }

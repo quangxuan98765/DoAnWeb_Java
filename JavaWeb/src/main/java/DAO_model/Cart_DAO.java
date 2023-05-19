@@ -117,6 +117,7 @@ public class Cart_DAO {
 	            ResultSet rs = stmt.executeQuery();
 	            int result = 0;
 	            while(rs.next()) {
+	            	result = 1;
 	            	int idsp = rs.getInt("id");
 	                int sl = rs.getInt("soluong");
 	                String query1 = "INSERT INTO sl_sp_dh (id_dh, id_sp, soluong) VALUES (?, ?, ?)";
@@ -124,14 +125,13 @@ public class Cart_DAO {
 	                statement.setInt(1, newid_dh);
 	                statement.setInt(2, idsp);
 	                statement.setInt(3, sl);
-	                result = statement.executeUpdate();
-	                statement.close();
+	                statement.executeUpdate();
 	            }
 	            if (result > 0) {
-	                String del = "DELETE FROM cart WHERE cart.taikhoan = ?";
+	                String del = "DELETE FROM cart WHERE taikhoan = ?";
 	                PreparedStatement statement = conn.prepareStatement(del);
 	                statement.setString(1, tk);
-	                statement.close();
+	                statement.executeUpdate();
 	            } else 
 	                System.out.println("Error executing query: " + query);
 	        }
@@ -166,7 +166,7 @@ public class Cart_DAO {
 	            id_1st_in_dh.put(id, t);
 	        }
 
-	        String sql3 = "SELECT donhang.id_dh, sanpham.HinhSP, sanpham.MaSP, sanpham.TenSP, sanpham.MoTaSP, sl_sp_dh.soluong, sanpham.GiaSP, donhang.date, donhang.trangthai " +
+	        String sql3 = "SELECT id_dh, id_sp, HinhSP, MaSP, TenSP, MoTaSP, soluong, GiaSP, date,trangthai " +
 	                      "FROM donhang " +
 	                      "INNER JOIN sl_sp_dh ON donhang.id = sl_sp_dh.id_dh " +
 	                      "INNER JOIN sanpham ON sl_sp_dh.id_sp = sanpham.id " +
@@ -186,6 +186,7 @@ public class Cart_DAO {
 	            row.put("soluong", rs3.getInt("soluong"));
 	            row.put("GiaSP", rs3.getDouble("GiaSP"));
 	            row.put("date", rs3.getString("date"));
+	            row.put("id_sp", rs3.getString("id_sp"));
 	            row.put("trangthai", rs3.getString("trangthai"));
 	            data_sp.add(row);
 	        }
@@ -211,6 +212,7 @@ public class Cart_DAO {
 	        exdata.put("dh_cost", dh_cost);
 	        exdata.put("id_1st_sp", id_1st_in_dh);
 	        exdata.put("data_sp", data_sp);
+	        System.out.println("\nTest: " +data_sp);
 	        return exdata;
 	    } catch (Exception e) {
 	        System.out.println("ERROR: " + e.getMessage());
@@ -218,9 +220,5 @@ public class Cart_DAO {
 	    return null;
 	}
 
-	
-//	public boolean HuyDon() {
-//		
-//	}
 
 }
