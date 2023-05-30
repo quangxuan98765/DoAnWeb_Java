@@ -96,7 +96,41 @@ public class Order_DAO {
 		return list;
 	}
 	
-	
+	public List<HashMap<String,String>> getOrderByYearAndMonth(String month,String year){
+		List<HashMap<String,String>> list = new ArrayList<>();
+		try {
+			Connection conn = ConnectionClass.getConnection();
+			String sql ="SELECT `donhang`.`id` AS `id`, `tentaikhoan`, `date`, `trangthai` , SUM(`GiaSP` * `soluong`) AS `cost` "
+						+"FROM `donhang` INNER JOIN `sl_sp_dh` ON `donhang`.`id` = `id_dh` "
+						+"INNER JOIN `sanpham` ON `id_sp` = `sanpham`.`id` "
+						+"GROUP BY `donhang`.`id`"
+						+" HAVING "
+						+ (month.equals("0") ? "" : "MONTH(`date`) = ? AND ") + "YEAR(`date`) = ? AND trangthai = 'confirmed'";
+
+			System.out.println("\nsql: " + sql);
+			PreparedStatement p = conn.prepareStatement(sql);
+			if(month.equals("0"))
+				p.setString(1, year);
+			else {
+			p.setString(1, month);
+			p.setString(2, year);
+			}
+			  ResultSet results = p.executeQuery();
+				while (results.next()) {
+			            HashMap<String, String> row = new HashMap<>();
+			            row.put("id", results.getString("id"));
+			            row.put("tentaikhoan", results.getString("tentaikhoan"));
+			            row.put("date", results.getString("date"));
+			            row.put("trangthai", results.getString("trangthai"));
+			            row.put("cost", results.getString("cost"));
+			            list.add(row);
+			        }	
+				conn.close();
+			}catch (Exception e) {
+				System.out.println("Error: ");
+		}
+		return list;
+	}
 	
 	public List<HashMap<String,String>> getOrderByID(String id){
 		List<HashMap<String ,String>> orderDetailProductList = new ArrayList<HashMap<String,String>>();

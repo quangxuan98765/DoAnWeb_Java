@@ -56,14 +56,14 @@ public class User_DAO{
 	public boolean isDisabled(String username) {
 	    try {
 	        Connection conn = ConnectionClass.getConnection();
-	        PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
+	        PreparedStatement ps = conn.prepareStatement("SELECT disabled FROM users WHERE username = ?");
 	        ps.setString(1, username);
 	        ResultSet rs = ps.executeQuery();
-	        boolean isDisabled = false;
+	        boolean isDisabled = true;
 	        if (rs.next()) { // Kiểm tra xem có bản ghi trong kết quả trả về hay không
-	            String role = rs.getString("disabled");
-	            if (role.equals(0)) {
-	            	isDisabled = true;
+	            String disabled = rs.getString("disabled");
+	            if (disabled.equals("0")) {
+	            	return false;
 	            }
 	        }
 	        rs.close();

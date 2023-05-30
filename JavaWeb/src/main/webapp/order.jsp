@@ -39,6 +39,7 @@
         <p class="add-product-title nav-link" onclick="location.href='Index'">trang chủ</p>
         <p class="add-product-title nav-link" onclick="location.href='user.jsp'">quản lý user</p>
         <p class="add-product-title nav-link" onclick="location.href='Order'">quản lý đơn hàng</p>
+        <p class="add-product-title nav-link" onclick="location.href='report.jsp'">Thống kê doanh thu</p>
     </div>
     <div class="order-list">
         <div class="add-product">

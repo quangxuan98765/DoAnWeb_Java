@@ -42,6 +42,7 @@ require_once('lib_login_session.php');
         <p class="add-product-title nav-link" onclick="location.href='Index'">trang chủ</p>
         <p class="add-product-title nav-link" onclick="location.href='user.jsp'">quản lý user</p>
         <p class="add-product-title nav-link" onclick="location.href='Order'">quản lý đơn hàng</p>
+        <p class="add-product-title nav-link" onclick="location.href='report.jsp'">Thống kê doanh thu</p>
     </div>
 
     <div class="list-orderdetail">
@@ -141,16 +142,16 @@ const id_dh = new URLSearchParams(window.location.search).get("iddh");
                                 <h3>`+e.TenSP+`</h3>
                                 <small>`+e.MoTaSP+`</small> </div></div>
                     <td><a>`+e.soluong+`</a></td>
-                    <td>`+ gia.toLocaleString('vi-VN') +` vnd</td> </tr>`;
+                    <td>`+ gia +` $</td> </tr>`;
             });
             text+=`</table></div><div class="total-price"><table><tr>
                             <td>Tổng giá sản phẩm</td>
-                            <td>`+TongGia.toLocaleString('vi-VN')+` vnd</td></tr><tr>
-                            <td>Vận chuyển</td><td>50.000 vnd</td></tr> <tr>
+                            <td>`+TongGia+` $</td></tr><tr>
+                            <td>Vận chuyển</td><td>50 $</td></tr> <tr>
                             <td>Mã giảm giá</td>
                             <td></td></tr><tr>
                             <td>Tổng thanh toán</td>
-                            <td>`+(TongGia+50000).toLocaleString('vi-VN')+` vnd</td></tr></table></div>`;
+                            <td>`+(TongGia+50)+` $</td></tr></table></div>`;
             document.querySelector(".list-orderdetail").innerHTML = text;
         }}
         xhr.send();

@@ -39,6 +39,7 @@
         <p class="add-product-title nav-link" onclick="location.href='Index'">trang chủ</p>
         <p class="add-product-title nav-link" onclick="location.href='user.jsp'">quản lý user</p>
         <p class="add-product-title nav-link" onclick="location.href='Order'">quản lý đơn hàng</p>
+        <p class="add-product-title nav-link" onclick="location.href='report.jsp'">Thống kê doanh thu</p>
     </div>
         <div class="box">
             <select class="select select-role">
@@ -56,5 +57,6 @@
             <ul class="box list_page"></ul>
         </div>
         <script type="module" src="js/user.js"></script>
+        <script type="module" src="js/checkDisabled.js"></script>
 </body>
 </html>

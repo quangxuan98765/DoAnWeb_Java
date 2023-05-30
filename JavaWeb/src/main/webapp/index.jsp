@@ -197,5 +197,6 @@
     <script src="js/search.js"></script>
     <script src="js/home.js"></script>
     <script src="js/footer.js"></script>
+    <script type="module" src='js/checkDisabled.js'></script>
 </body>
 </html>

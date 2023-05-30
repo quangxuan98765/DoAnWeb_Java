@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -17,30 +18,66 @@
 
 <body>
 <div class="nav">
-    <img src="img/dark-logo.png" class="brand-logo" alt="">
-    <div class="nav-items">
-            <div class="search">
-                <input type="text" class="search-box" placeholder="Tìm tên thương hiệu, sản phẩm...">
-                <button class="search-btn">Tìm kiếm</button>                       
-            </div>
-            <a>
-                <img src="img/user.png" id="user-img" alt="">
-                <div class="login-logout-popup hide"></div>
-			</a>
+		<img src="img/dark-logo.png" class="brand-logo" alt="">
+		<div class="nav-items">
+			<div class="search">
+				<input type="text" class="search-box"
+					placeholder="Tìm tên thương hiệu, sản phẩm...">
+				<button class="search-btn">Tìm kiếm</button>
+			</div>
+			<a>
+    <img src="img/user.png" id="user-img" alt="">
+    <div class="login-logout-popup hide">
+    <c:if test="${not empty sessionScope.username}">
+            <p class="account-info">
+                Đang đăng nhập
+                ${sessionScope.username}
+            </p>
+            <form action="DangXuat" method="get">
+                <button class="btn" id="user-btn" type="submit">đăng xuất</button>
+            </form>
+    </c:if>
+    <c:if test="${empty sessionScope.username}">
+            <p class="account-info">Chưa đăng nhập</p>
+            <button class="btn" id="user-btn">đăng nhập</button>
+        <script>
+            document.getElementById("user-btn").addEventListener("click", function() {
+                window.location.href = "XulyDangNhap";
+            });
+        </script>
+    </c:if>
     </div>
-</div>
-<ul class="links-container">
-    <li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</a></li>
-    <li class="link-item"><a href="LaptopProduct.jsp" class="link">Laptop</a></li>
-    <li class="link-item"><a href="acceProduct.jsp" class="link">Phụ Kiện</a></li>
-</ul>
-    <script>
-        const userImageButton = document.getElementById("user-img");
-        const userPop = document.querySelector('.login-logout-popup');
-        userImageButton.addEventListener('click', () => {
-            userPop.classList.toggle('hide');
-        })
-    </script>
+</a>
+<c:if test="${not empty sessionScope.username}">
+ <a href="Historycart"><img src="img/history.png"></a> 
+ <a href="Cart"><img src="img/cart.png"></a>
+</c:if>
+		</div>
+	</div>
+	<ul class="links-container">
+	<c:choose>
+	  <c:when test="${sessionScope.role == 'admin'}">
+	  	<li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</a></li>
+	    <li class="link-item"><a href="LaptopProduct.jsp" class="link">Laptop</a></li>
+	    <li class="link-item"><a href="acceProduct.jsp" class="link">Phụ Kiện</a></li>
+	    <li class="link-item"><a href="addProduct" class="link">Thêm sản phẩm</a></li>
+	    <li class="link-item"><a href="Order" class="link">Quản lý Shop</a></li>
+	  </c:when>
+	  <c:otherwise>
+	    <li class="link-item"><a href="Index" class="link"><img src="img/home.png">Trang chủ</a></li>
+	    <li class="link-item"><a href="LaptopProduct.jsp" class="link">Laptop</a></li>
+	    <li class="link-item"><a href="acceProduct.jsp" class="link">Phụ Kiện</a></li>
+	  </c:otherwise>
+	</c:choose>
+	</ul>
+	
+	<script>
+    const userImageButton = document.getElementById("user-img");
+    const userPop = document.querySelector('.login-logout-popup');
+    userImageButton.addEventListener('click', () =>{
+        userPop.classList.toggle('hide');
+    })
+</script>
     <section class="search-results">
         <div class="box box-select">
          
@@ -73,17 +110,17 @@
 		import { newFunc } from "./js/searchBar.js";
 		Func();
 		function Func() {
-  			try {
- 		   		newFunc();
-       	 		document.getElementById("select-category").value = 2;
+  			try {	
+       	 		document.getElementById("select-category").value = 1;
        		 	document.getElementById("select-category").previousElementSibling.style.display = "none";
      		   	document.getElementById("select-category").style.display = "none";
+				newFunc();
   			} catch (error) {
 				if(error instanceof TypeError)
-					location.reload();
+					myFunction();
  				 else console.error("Error: " +error);
+				}
 			}
-		}
 	</script>
     <script type="module" src="js/searchBar.js"></script>
    
